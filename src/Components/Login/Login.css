@@ -1,0 +1,254 @@
+
+.login-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100vh;
+  background: #F2F6FF;
+}
+
+.left-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px;
+  color: #FFFFFF;
+  margin-top: 250px;
+}
+
+.right-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  margin-top: 150px;
+  margin-left: 200px;
+  /* background: #1A1E2D; */
+  text-align: center;
+}
+
+.sign-up {
+  width: 90px;
+  height: 40px;
+  border-radius: 6px;
+  text-align: left;
+  letter-spacing: 0px;
+  opacity: 1;
+  margin-bottom: 20px;
+  color: var(--unnamed-color-0c111b);
+  color: #0C111B;
+}
+
+  
+.input-label {
+  width: 58px;
+height: 21px;
+color: var(--unnamed-color-0c111b);
+text-align: left;
+letter-spacing: 0px;
+color: #0C111B;
+opacity: 1;
+  margin-bottom: 20px;
+}
+
+.email-input,
+.password-input {
+  width: 328px;
+height: 45px;
+  padding: 5px;
+  background: var(--unnamed-color-ffffff) 0% 0% no-repeat padding-box;
+border: 1px solid var(--unnamed-color-b0b8c3);
+background: #FFFFFF 0% 0% no-repeat padding-box;
+border: 1px solid #B0B8C3;
+opacity: 1;
+  border-radius: 4px;
+  opacity: 1;
+  color: #181717;
+  text-align: left;
+  letter-spacing: 0px;
+  margin-bottom: 15px;
+  
+}
+.email-input,
+.password-input {
+  font-size: 20px; /* Adjust the font size as needed */
+}
+.email-input::placeholder,
+.password-input::placeholder {
+  color: #777C83;
+  text-align: left;
+  letter-spacing: 0px;
+  opacity: 1;
+  text-indent: 10px;
+  font-size: 14px;
+}
+.password-links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.signup-link{
+  /* color: #777C83; */
+  text-decoration: none;
+  align-self: flex-start;
+  justify-self: left;
+  color: var(--unnamed-color-1b88e6);
+text-align: left;
+font: normal normal 600 16px/21px Red Hat Display;
+letter-spacing: 0px;
+color: #1B88E6;
+opacity: 1;
+}
+.reset-password-link {
+  /* color: #777C83; */
+  text-decoration: none;
+  align-self: flex-end;
+  justify-self: right;
+  margin-left: 180px;
+  color: var(--unnamed-color-1b88e6);
+text-align: left;
+font: normal normal 600 16px/21px Red Hat Display;
+letter-spacing: 0px;
+color: #1B88E6;
+opacity: 1;
+}
+
+.signup-link:hover,
+.reset-password-link:hover {
+  text-decoration: underline;
+}
+  .title {
+    /* position: absolute;
+    top: 239px;
+    left: 86px; */
+    
+    align-self: left;
+    justify-self: left;
+    width: 486px;
+    height: 132px;
+    color: #191717;
+    text-align: left;
+    font: normal normal 600 50px/66px Red Hat Display;
+    letter-spacing: 0px;
+    opacity: 1;
+    margin-left: 70px;
+    /* margin-top: 60px; */
+  }
+  .subtitle {
+    /* position: absolute;
+    top: 400px;
+    left: 90px; */
+    width: 482px;
+    height: 52px;
+    margin-left: 70px;
+    margin-top: 30px;
+    color: #777C83;
+    text-align: left;
+    letter-spacing: 0px;
+    opacity: 1;
+  }
+/* .password-input::placeholder{
+    color: #777C83;
+    text-align: left;
+    letter-spacing: 0px;
+    opacity: 1;
+    text-indent: 10px; 
+  }   
+
+
+
+
+.email-input::placeholder {
+    color: #777C83;
+    text-align: left;
+    letter-spacing: 0px;
+    opacity: 1;
+    text-indent: 10px; 
+  } */
+
+  
+  /* .submit-button {
+    align-self: flex-start;
+    justify-self: center;
+    width: 80px;
+    height: 35px;
+    margin-top: 20px;
+    background: transparent linear-gradient(270deg, var(--unnamed-color-1b88e6) 0%, #1778CB 100%) 0% 0% no-repeat padding-box;
+    background: transparent linear-gradient(270deg, #1B88E6 0%, #1778CB 100%) 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    opacity: 1;
+    color: var(--unnamed-color-ffffff);
+    text-align: center;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+text-decoration: none;
+  } */
+
+  /* Style for the button container */
+.button-container {
+  display: flex;
+  align-items: center; /* Vertically align the buttons */
+  justify-content: space-between; /* Create space between the buttons */
+}
+
+/* Style for the Submit button */
+.submit-container {
+  margin-right: 10px; /* Add spacing between the buttons */
+}
+
+.submit-button {
+  width: 80px;
+  height: 41px;
+  background-color: #4285f4;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style for the Google login button */
+.google-login-container {
+  margin-left: 30px;
+  margin-top: 15px;
+}
+
+.google-login-button {
+  width: 60px;
+  height: 50px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent; /* Remove background color */
+}
+
+.google-login-button img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  /* Add any additional styles for the Google icon image */
+}
+/* Remove default anchor styles (e.g., underlines) */
+.google-login-container:hover,
+.google-login-container:active,
+.google-login-container:focus {
+  text-decoration: none;
+  outline: none;
+}

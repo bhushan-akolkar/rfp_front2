@@ -1,0 +1,188 @@
+
+.login-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100vh;
+    background: #F2F6FF;
+  }
+  
+  .left-containerr {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+    color: #FFFFFF;
+    margin-top: 250px;
+  }
+  
+  .right-containerr {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    margin-top: 100px;
+    margin-left: 200px;
+    /* background: #1A1E2D; */
+    text-align: center;
+  }
+  
+  .sign-up {
+    width: 90px;
+    height: 40px;
+    border-radius: 6px;
+    text-align: left;
+    letter-spacing: 0px;
+    opacity: 1;
+    margin-bottom: 20px;
+    color: var(--unnamed-color-0c111b);
+    color: #0C111B;
+  }
+  
+    
+  .input-label {
+    width: 58px;
+  height: 21px;
+  color: var(--unnamed-color-0c111b);
+  text-align: left;
+  letter-spacing: 0px;
+  color: #0C111B;
+  opacity: 1;
+    margin-bottom: 20px;
+  }
+  .name-input,
+  .email-input,
+  .password-input {
+    width: 328px;
+  height: 45px;
+    padding: 5px;
+    background: var(--unnamed-color-ffffff) 0% 0% no-repeat padding-box;
+  border: 1px solid var(--unnamed-color-b0b8c3);
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border: 1px solid #B0B8C3;
+  opacity: 1;
+    border-radius: 4px;
+    opacity: 1;
+    color: #181717;
+    text-align: left;
+    letter-spacing: 0px;
+    margin-bottom: 15px;
+    
+  }
+  .name-input::placeholder,
+  .email-input::placeholder,
+  .password-input::placeholder {
+    color: #777C83;
+    text-align: left;
+    letter-spacing: 0px;
+    opacity: 1;
+    text-indent: 10px;
+  }
+  .password-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .signup-link{
+    /* color: #777C83; */
+    text-decoration: none;
+    align-self: flex-start;
+    justify-self: left;
+    color: var(--unnamed-color-1b88e6);
+  text-align: left;
+  font: normal normal 600 16px/21px Red Hat Display;
+  letter-spacing: 0px;
+  color: #1B88E6;
+  opacity: 1;
+  }
+  .reset-password-link {
+    /* color: #777C83; */
+    text-decoration: none;
+    align-self: flex-end;
+    justify-self: right;
+    margin-left: 180px;
+    color: var(--unnamed-color-1b88e6);
+  text-align: left;
+  font: normal normal 600 16px/21px Red Hat Display;
+  letter-spacing: 0px;
+  color: #1B88E6;
+  opacity: 1;
+  }
+  
+  .signup-link:hover,
+  .reset-password-link:hover {
+    text-decoration: underline;
+  }
+    .title {
+      /* position: absolute;
+      top: 239px;
+      left: 86px; */
+      
+      align-self: left;
+      justify-self: left;
+      width: 486px;
+      height: 132px;
+      color: #191717;
+      text-align: left;
+      font: normal normal 600 50px/66px Red Hat Display;
+      letter-spacing: 0px;
+      opacity: 1;
+      margin-left: 70px;
+      /* margin-top: 60px; */
+    }
+    .subtitle {
+      /* position: absolute;
+      top: 400px;
+      left: 90px; */
+      width: 482px;
+      height: 52px;
+      margin-left: 70px;
+      margin-top: 30px;
+      color: #777C83;
+      text-align: left;
+      letter-spacing: 0px;
+      opacity: 1;
+    }
+  /* .password-input::placeholder{
+      color: #777C83;
+      text-align: left;
+      letter-spacing: 0px;
+      opacity: 1;
+      text-indent: 10px; 
+    }   
+  
+  
+  
+  
+  .email-input::placeholder {
+      color: #777C83;
+      text-align: left;
+      letter-spacing: 0px;
+      opacity: 1;
+      text-indent: 10px; 
+    } */
+    .submit-button {
+      align-self: flex-start;
+      justify-self: center;
+      /* margin-right: 550px; */
+      width: 80px;
+      height: 35px;
+      margin-top: 20px;
+      background: transparent linear-gradient(270deg, var(--unnamed-color-1b88e6) 0%, #1778CB 100%) 0% 0% no-repeat padding-box;
+      background: transparent linear-gradient(270deg, #1B88E6 0%, #1778CB 100%) 0% 0% no-repeat padding-box;
+      border-radius: 4px;
+      opacity: 1;
+      color: var(--unnamed-color-ffffff);
+      text-align: center;
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
