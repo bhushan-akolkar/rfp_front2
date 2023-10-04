@@ -4,6 +4,7 @@ import Login from './Components/Login/Login';
 import ChatUI from './Components/Chat/Chat';
 import Register from './Components/Register/Register';
 import Document from './Components/Similar_Document/Similar_Document';
+import similardocument from './Components/Similar_Document/show_similar_document';
 
 // import SignInPage from './Components/Register/Register';
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/register"  component={Register} />
           <Route path="/chat" component={ChatUI} />
           <Route path="/document" component={Document} />
+          <Route path="/similardocument" component={similardocument} />
 
         </Switch>
       </Router>

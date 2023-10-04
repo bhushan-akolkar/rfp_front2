@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useHistory } from 'react-router-dom';
 // import MobileMenu from './MobileMenu';
 import './Similar_Document.css';
 
@@ -15,7 +16,7 @@ const ChatUI = () => {
     const [selectedFileName, setSelectedFileName] = useState('');
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
-
+    const history = useHistory();
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -76,6 +77,25 @@ const ChatUI = () => {
         }
       } catch (error) {
         console.error('Error uploading document:', error);
+      }
+    };
+
+    const handleShowSimilarDocument = async () => {
+      // Make an API request to fetch similar documents (adjust the endpoint as needed)
+      try {
+        const response = await fetch('https://your-api-endpoint.com/similar_documents');
+        if (response.ok) {
+          const data = await response.json();
+          // Redirect to the ShowSimilarDocument page with the API response as a query parameter
+          history.push({
+            pathname: '/similardocument',
+            state: { apiResponse: data },
+          });
+        } else {
+          console.error('Error fetching similar documents.');
+        }
+      } catch (error) {
+        console.error('Error fetching similar documents:', error);
       }
     };
   const handleChatHistoryClick = (index) => {
@@ -200,7 +220,7 @@ const ChatUI = () => {
         {/* <iframe src={document.data} title={`Uploaded Document ${index + 1}`} /> */}
       </div>
     ))}
-    <button className="similarDoc-button" onClick={handleUploadButtonClick}>
+    <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
             Get Similar Document
           </button>
      </div>
