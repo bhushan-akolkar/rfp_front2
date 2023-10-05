@@ -81,16 +81,12 @@ const ChatUI = () => {
     };
 
     const handleShowSimilarDocument = async () => {
-      // Make an API request to fetch similar documents (adjust the endpoint as needed)
       try {
         const response = await fetch('https://your-api-endpoint.com/similar_documents');
         if (response.ok) {
           const data = await response.json();
-          // Redirect to the ShowSimilarDocument page with the API response as a query parameter
-          history.push({
-            pathname: '/similardocument',
-            state: { apiResponse: data },
-          });
+          const apiResponseQueryParam = encodeURIComponent(JSON.stringify(data));
+          window.location.href = `/show_similar_document?apiResponse=${apiResponseQueryParam}`;
         } else {
           console.error('Error fetching similar documents.');
         }

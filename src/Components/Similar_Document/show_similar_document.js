@@ -5,6 +5,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import ReactMarkdown from 'react-markdown';
 import remarkHtml from 'remark-html';
 import remarkReact from 'remark-react';
+import { useLocation } from 'react-router-dom';
 
 import './show_similar_document.css';
 
@@ -57,28 +58,35 @@ const ChatUI = () => {
   );
   const [chatPlaceholder, setChatPlaceholder] = useState(placeholderText);
    const [isLoading, setIsLoading] = useState(false); // Loading indicator
-   const [apiResponse, setApiResponse] = useState([]);
-   useEffect(() => {
-    // Replace this URL with the actual API endpoint for fetching similar documents
-    const apiUrl = 'https://your-api-endpoint.com/similar_documents';
+  //  const [apiResponse, setApiResponse] = useState([]);
+  //  useEffect(() => {
+  //   // Replace this URL with the actual API endpoint for fetching similar documents
+  //   const apiUrl = 'https://your-api-endpoint.com/similar_documents';
 
-    // Make the API request to fetch similar documents
-    fetch(apiUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setApiResponse(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching similar documents:', error);
-        setIsLoading(false);
-      });
-  }, []);
+  //   // Make the API request to fetch similar documents
+  //   fetch(apiUrl)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setApiResponse(data);
+  //       setIsLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching similar documents:', error);
+  //       setIsLoading(false);
+  //     });
+  // }, []);
+  const location = useLocation();
+  // const { apiResponse } = location.state;
+  const queryParams = new URLSearchParams(location.search);
+  const apiResponseQueryParam = queryParams.get('apiResponse');
+  const apiResponse = JSON.parse(decodeURIComponent(apiResponseQueryParam));
+
+  
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -423,8 +431,8 @@ const ChatUI = () => {
           <div className="ask-question-text">Ask a question</div>
         </div>
         <hr className="divider" />
-        {/* <div className="chat-messages" ref={chatContainerRef}>
-        <div className={`chat-placeholder ${chatPlaceholder ? 'visible' : ''}`}>
+        <div className="chat-messages" ref={chatContainerRef}>
+        {/*<div className={`chat-placeholder ${chatPlaceholder ? 'visible' : ''}`}>
           {chatPlaceholder}
         </div> */}
         {isLoading ? ( // Loading indicator
@@ -440,7 +448,7 @@ const ChatUI = () => {
   </div>
 )}
           <div ref={scrollToBottom}></div>
-        {/* </div> */}
+        </div>
         {/* <div className="input-box-container">
        
           <input
