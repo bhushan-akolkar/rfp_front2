@@ -82,7 +82,7 @@ const ChatUI = () => {
         if (response.ok) {
           const data = await response.json();
           const apiResponseQueryParam = encodeURIComponent(JSON.stringify(data));
-          window.location.href = `/similardocument?apiResponse=${apiResponseQueryParam}`;
+          window.location.href = `/getchecklist?apiResponse=${apiResponseQueryParam}`;
         } else {
           console.error('Error fetching similar documents.');
         }
