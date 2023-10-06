@@ -7,7 +7,7 @@ import remarkHtml from 'remark-html';
 import remarkReact from 'remark-react';
 import { useLocation } from 'react-router-dom';
 
-import './show_similar_document.css';
+import './show_checklist.css';
 
 const ChatUI = () => {
   const chatContainerRef = useRef(null);
@@ -112,21 +112,14 @@ const ChatUI = () => {
         <hr className="divider" />
         <div className="chat-messages" ref={chatContainerRef}>
    
-        <div className="api-response">
-            {apiResponse.similar_documents.map((doc, index) => (
-            <div key={index} className="response-item">
-
-            <h3>Document Name</h3>
-            <div>{doc['Document Name']}</div>
-
-            <h3>Summary</h3> 
-            <div>{doc['Summary']}</div>
-            
-            <hr />
-            </div>
-      ))}
+    <div className="api-response">
+    {/* Display the API response here */}
+    {apiResponse.map((responseItem, index) => (
+      <div key={index} className="response-item">
+        {responseItem}
+      </div>
+    ))}
   </div>
-  
 
           <div ref={scrollToBottom}></div>
         </div>

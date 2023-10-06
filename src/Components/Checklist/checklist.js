@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
 // import MobileMenu from './MobileMenu';
-import './Similar_Document.css';
+import './checklist.css';
 
 const ChatUI = () => {
   const [rfpName, setRfpName] = useState('');
@@ -198,7 +198,7 @@ const ChatUI = () => {
       </div>
     ))}
     <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
-            Get Similar Document
+            Get checklist
           </button>
      </div>
      )}
