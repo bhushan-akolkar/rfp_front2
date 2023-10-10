@@ -5,7 +5,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import ReactMarkdown from 'react-markdown';
 import remarkHtml from 'remark-html';
 import remarkReact from 'remark-react';
-import { useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import './show_checklist.css';
 
@@ -26,7 +26,57 @@ const ChatUI = () => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
+  const [selectedOption, setSelectedOption] = useState(getDefaultOption());
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const handleOptionClick = (option) => {
+    
+    switch (option) {
+      case 'Prompt':
+        window.location.href = '/chat';
+        break;
+      case 'Similar Document':
+        window.location.href = '/document';
+        break;
+      case 'Checklist':
+        window.location.href = '/checklist';
+        break;
+      case 'All Documents':
+        window.location.href = '/all';;
+        break;
+      default:
+        break;
+    }
+    setSelectedOption(option);
+    setIsDropdownOpen(false);
+    
+  };
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+  useEffect(() => {
+    localStorage.setItem('selectedOption', selectedOption);
+  }, [selectedOption]);
+
+  function getDefaultOption() {
+    const currentPathname = location.pathname;
+    switch (currentPathname) {
+      case '/chat':
+        return 'Prompt';
+      case '/document':
+        return 'Similar Document';
+      case '/checklist':
+        return 'Checklist';
+      case '/all_documents':
+        return 'All Documents';
+        case '/similardocument':
+          return 'Similar Document';
+        case '/getchecklist':
+          return 'Checklist';
+      default:
+        return 'Prompt'; // Default to 'Prompt' if the path doesn't match any known option
+    }
+  }
  
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -68,7 +118,7 @@ const ChatUI = () => {
       
       <div className={`sidebar ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
         <div className="sidebar-header">
-          <div className="recent-chat-label">Recent Chat</div>
+          <div className="recent-chat-labell">Recent Uploads</div>
           <div className="divider-container">
             <hr className="divider-below-recent-chat" />
           </div>
@@ -81,7 +131,7 @@ const ChatUI = () => {
 </div>
 
       <div className="user-profile-container">
-        <label className="mode-switch">
+        {/* <label className="mode-switch">
           <input
             type="checkbox"
             checked={isDarkMode}
@@ -91,7 +141,20 @@ const ChatUI = () => {
             <span className="mode-label light-label">Light</span>
             <span className="mode-label dark-label">Dark</span>
           </span>
-        </label>
+        </label> */}
+         <div className="dropdownn">
+        <button className="dropbtn" onClick={toggleDropdown}>
+          {selectedOption } &#9660;
+        </button>
+        {isDropdownOpen && (
+          <div className="dropdown-content">
+            <div onClick={() => handleOptionClick('Prompt')}>Prompt</div>
+            <div onClick={() => handleOptionClick('Similar Document')}>Similar Document</div>
+            <div onClick={() => handleOptionClick('Checklist')}>Checklist</div>
+            <div onClick={() => handleOptionClick('All Documents')}>All Documents</div>
+          </div>
+        )}
+      </div>
         <button className="user-profile-button" type="button" onClick={toggleLogout}>
           <div className="user-profile-image">
             <img src={process.env.PUBLIC_URL + '/user-3-line.png'} alt="User Profile" />

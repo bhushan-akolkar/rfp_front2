@@ -5,6 +5,7 @@ import MobileMenu from './MobileMenu';
 import ReactMarkdown from 'react-markdown';
 import remarkHtml from 'remark-html';
 import remarkReact from 'remark-react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import './Chat.css';
 
@@ -28,7 +29,7 @@ const ChatUI = () => {
     'what is KYC',
     'what is credit card'
   ]);
-  
+  const location = useLocation();
   const placeholderText = (
     <div>
       Hi, I am BankerEaze 🤖. These are some commands that you can use to control how I should respond to you.<br /><br />
@@ -56,8 +57,53 @@ const ChatUI = () => {
     </div>
   );
   const [chatPlaceholder, setChatPlaceholder] = useState(placeholderText);
-   const [isLoading, setIsLoading] = useState(false); // Loading indicator
+   const [isLoading, setIsLoading] = useState(false); 
+   const [selectedOption, setSelectedOption] = useState(getDefaultOption());
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    setIsDropdownOpen(false);
+    switch (option) {
+      case 'Prompt':
+        window.location.href = '/chat';
+        break;
+      case 'Similar Document':
+        window.location.href = '/document';
+        break;
+      case 'Checklist':
+        window.location.href = '/checklist';
+        break;
+      case 'All Documents':
+        window.location.href = '/all';;
+        break;
+      default:
+        break;
+    }
+    
+  };
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+  useEffect(() => {
+    localStorage.setItem('selectedOption', selectedOption);
+  }, [selectedOption]);
+
+  function getDefaultOption() {
+    const currentPathname = location.pathname;
+    switch (currentPathname) {
+      case '/chat':
+        return 'Prompt';
+      case '/document':
+        return 'Similar Document';
+      case '/checklist':
+        return 'Checklist';
+      case '/all_documents':
+        return 'All Documents';
+      default:
+        return 'Prompt'; // Default to 'Prompt' if the path doesn't match any known option
+    }
+  }
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -366,7 +412,7 @@ const ChatUI = () => {
 </div>
 
       <div className="user-profile-container">
-        <label className="mode-switch">
+        {/* <label className="mode-switch">
           <input
             type="checkbox"
             checked={isDarkMode}
@@ -376,7 +422,20 @@ const ChatUI = () => {
             <span className="mode-label light-label">Light</span>
             <span className="mode-label dark-label">Dark</span>
           </span>
-        </label>
+        </label> */}
+        <div className="dropdownn">
+        <button className="dropbtn" onClick={toggleDropdown}>
+          {selectedOption } &#9660;
+        </button>
+        {isDropdownOpen && (
+          <div className="dropdown-content">
+            <div onClick={() => handleOptionClick('Prompt')}>Prompt</div>
+            <div onClick={() => handleOptionClick('Similar Document')}>Similar Document</div>
+            <div onClick={() => handleOptionClick('Checklist')}>Checklist</div>
+            <div onClick={() => handleOptionClick('All Documents')}>All Documents</div>
+          </div>
+        )}
+      </div>
         <button className="user-profile-button" type="button" onClick={toggleLogout}>
           <div className="user-profile-image">
             <img src={process.env.PUBLIC_URL + '/user-3-line.png'} alt="User Profile" />

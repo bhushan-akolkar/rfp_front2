@@ -56,9 +56,9 @@
     font-family:Verdana, Geneva, Tahoma, sans-serif
   }
   /* Add this to your CSS file */
-.recent-chat-label {
+.recent-chat-labell {
     margin-top: 10px;
-    width: 121px;
+    width: 134px;
     height: 26px;
     text-align: left;
     font: normal normal 600 20px/26px Red Hat Display;
@@ -345,6 +345,27 @@
   opacity: 1;
   margin-right: 10px;
   margin-bottom: auto;
+}
+.input-container {
+  display: flex;
+  align-items: center;
+}
+/* Style for the RFP Name input */
+.rfp-name-input {
+  /* flex: 1;  */
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px; /* Add some spacing between inputs */
+}
+
+/* Style for the file input */
+input[type="file"] {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 .document-upload-container {
     display: flex;
@@ -691,6 +712,7 @@ opacity: 1;
     height: 40px;
     background:#1B88E6;
     border-radius: 50%;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -698,6 +720,61 @@ opacity: 1;
     margin-right: 10px;
     cursor: pointer;
   }
+  
+
+.dropdownn {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px; 
+}
+
+
+.dropbtn {
+  background-color: transparent; 
+  color: #1b1919; 
+  font-size: 15px;
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
+
+
+.dropdown-content {
+  /* display: none; */
+  position: absolute;
+  background-color: #f9f9f9; 
+  width: 160px; 
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); 
+  z-index: 2; 
+  right: 0; 
+  top: 100%; 
+}
+
+
+.dropdown-content div {
+  padding: 12px 16px; 
+  text-decoration: none;
+  display: block;
+  color: #333; 
+  cursor: pointer;
+}
+
+
+.dropdown-content div:hover {
+  background-color: #ddd; 
+}
+
+
+.show {
+  display: block;
+}
+
+
+.active {
+  background-color: #3498db; 
+  color: #fff; 
+}
 
   .user-profile-image {
     width: 24px;
@@ -993,32 +1070,7 @@ background:linear-gradient(#dde3f1,white) ;
   } */
   
   
-  /* Add these CSS rules to your stylesheet */
-  
-  /* Dropdown container */
-  .dropdown {
-    position: absolute;
-    top: 530px; 
-    left: 540px;
-    width: 7%;
-    background-color: #fff; 
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-    z-index: 1;
-    max-height: 150px; 
-    overflow-y: auto;
-  }
-  
-  /* Dropdown option style */
-  .dropdown-option {
-    padding: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .dropdown-option:hover {
-    background-color: #f0f0f0;
-  }
+ 
   
   @media screen and (max-width: 767px) {
     /* Sidebar styles for mobile view */

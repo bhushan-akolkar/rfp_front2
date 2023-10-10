@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 // import MobileMenu from './MobileMenu';
 import './Similar_Document.css';
 
@@ -15,11 +15,65 @@ const ChatUI = () => {
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const history = useHistory();
+    const location = useLocation();
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
+  const [selectedOption, setSelectedOption] = useState(getDefaultOption());
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  
+  const handleOptionClick = (option) => {
+    
+    switch (option) {
+      case 'Prompt':
+        window.location.href = '/chat';
+        break;
+      case 'Similar Document':
+        window.location.href = '/document';
+        break;
+      case 'Checklist':
+        window.location.href = '/checklist';
+        break;
+      case 'All Documents':
+        window.location.href = '/all';;
+        break;
+      default:
+        break;
+    }
+    setSelectedOption(option);
+    setIsDropdownOpen(false);
+    
+  };
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+  useEffect(() => {
+    localStorage.setItem('selectedOption', selectedOption);
+  }, [selectedOption]);
+
+  function getDefaultOption() {
+    const currentPathname = location.pathname;
+    switch (currentPathname) {
+      case '/chat':
+        return 'Prompt';
+      case '/document':
+        return 'Similar Document';
+      case '/checklist':
+        return 'Checklist';
+      case '/all_documents':
+        return 'All Documents';
+        case '/similardocument':
+          return 'Similar Document';
+        case '/getchecklist':
+          return 'Checklist';
+          case '/similardocument':
+            return 'Similar Document';
+          case '/getchecklist':
+            return 'Checklist';
+      default:
+        return 'Prompt'; // Default to 'Prompt' if the path doesn't match any known option
+    }
+  }
   const handleDocumentUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -91,7 +145,8 @@ const ChatUI = () => {
       }
     };
   
-
+  
+    
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -120,15 +175,25 @@ const ChatUI = () => {
       </button>
 
 
-      <img src="dataease-logo.png" alt="Logo" className="logo" />
-      <h2 className="titlee">RBI Regulatory compliance assistant</h2>
+              <div className="logo" >
+          Banker Eaze
+        </div>
+        <h2 className="titlee">Finance Regulatory compliance assistant</h2>
 
       <div className={`sidebar ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-        
+      <div className="sidebar-header">
+      <div className="recent-chat-labell">Recent Uploads</div>
+          <div className="divider-container">
+            <hr className="divider-below-recent-chat" />
+          </div>
+          </div>
       </div>
-
+      <div className="bottom-left-section">
+  <p className="bottom-left-text">Product From</p>
+  <img src="dataease-logo.png" alt="Product Image" className="bottom-left-image" />
+</div>
       <div className="user-profile-container">
-        <label className="mode-switch">
+        {/* <label className="mode-switch">
           <input
             type="checkbox"
             checked={isDarkMode}
@@ -138,9 +203,24 @@ const ChatUI = () => {
             <span className="mode-label light-label">Light</span>
             <span className="mode-label dark-label">Dark</span>
           </span>
-        </label>
+        </label> */}
+        <div className="dropdownn">
+        <button className="dropbtn" onClick={toggleDropdown}>
+          {selectedOption } &#9660;
+        </button>
+        {isDropdownOpen && (
+          <div className="dropdown-content">
+            <div onClick={() => handleOptionClick('Prompt')}>Prompt</div>
+            <div onClick={() => handleOptionClick('Similar Document')}>Similar Document</div>
+            <div onClick={() => handleOptionClick('Checklist')}>Checklist</div>
+            <div onClick={() => handleOptionClick('All Documents')}>All Documents</div>
+          </div>
+        )}
+      </div>
         <button className="user-profile-button" type="button" onClick={toggleLogout}>
-         
+          <div className="user-profile-image">
+            <img src={process.env.PUBLIC_URL + '/user-3-line.png'} alt="User Profile" />
+          </div>
         </button>
         {isLogoutVisible && (
           <button className="logout-button" onClick={handleLogout}>
@@ -166,6 +246,7 @@ const ChatUI = () => {
   <div className="file-size-text">
     Max. file size 24 MB.
   </div>
+  <div className="input-container">
   <input
           type="text"
           value={rfpName}
@@ -181,6 +262,7 @@ const ChatUI = () => {
             accept=".pdf" 
             // style={{ display: 'none' }} // hide the file input
           />
+          </div>
           {/* <br/> */}
           <button className="upload-button" onClick={handleUploadButtonClick}>
             Upload Document
