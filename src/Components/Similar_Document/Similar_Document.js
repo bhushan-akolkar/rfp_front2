@@ -16,6 +16,7 @@ const ChatUI = () => {
     const fileInputRef = useRef(null);
     const history = useHistory();
     const location = useLocation();
+    const [isLoading, setIsLoading] = useState(false);
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -132,16 +133,20 @@ const ChatUI = () => {
 
     const handleShowSimilarDocument = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch('https://your-api-endpoint.com/similar_documents');
         if (response.ok) {
           const data = await response.json();
+          setIsLoading(false);
           const apiResponseQueryParam = encodeURIComponent(JSON.stringify(data));
           window.location.href = `/similardocument?apiResponse=${apiResponseQueryParam}`;
         } else {
           console.error('Error fetching similar documents.');
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error fetching similar documents:', error);
+        setIsLoading(false);
       }
     };
   
@@ -178,6 +183,7 @@ const ChatUI = () => {
 
   return (
     <div className={`chat-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+      
       <button
         className={`hamburger-button ${isMobileMenuOpen ? 'open' : ''}`}
         onClick={toggleMobileMenu}
@@ -298,6 +304,11 @@ const ChatUI = () => {
     <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
             Get Similar Document
           </button>
+          {isLoading && (
+      <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+    )}
      </div>
      )}
      
