@@ -31,6 +31,17 @@
     margin-bottom: 20px;
   }
   
+  .folder-item {
+    text-align: center; 
+    padding: 8px 0; 
+    border-bottom: 1px solid #ccc; 
+    cursor: pointer; 
+  }
+  
+  
+  .folder-item:last-child {
+    border-bottom: none;
+  }
   /* .logo {
     
     position: absolute;

@@ -16,6 +16,7 @@ const ChatUI = () => {
     const fileInputRef = useRef(null);
     const history = useHistory();
     const location = useLocation();
+    const [folderList, setFolderList] = useState([]);
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -147,7 +148,18 @@ const ChatUI = () => {
       }
     };
   
-
+    useEffect(() => {
+      
+      const apiUrl = 'https://your-api-endpoint.com/get_folders';
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          setFolderList(data.docstack_list);
+        })
+        .catch((error) => {
+          console.error('Error fetching folder list:', error);
+        });
+    }, []);
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -188,6 +200,11 @@ const ChatUI = () => {
             <hr className="divider-below-recent-chat" />
           </div>
           </div>
+          {folderList.map((folder, index) => (
+            <div key={index} className="folder-item">
+              {folder}
+            </div>
+          ))}
       </div>
       <div className="bottom-left-section">
   <p className="bottom-left-text">Product From</p>

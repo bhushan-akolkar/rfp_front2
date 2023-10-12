@@ -94,18 +94,18 @@ const ChatUI = () => {
   
 
   const handleUploadButtonClick = async () => {
-    // Check if a file has been uploaded
+   
     if (!documentFile || !rfpName) {
       console.error('Please upload a document before clicking the "Upload Document" button.');
       return;
     }
-      // Create a FormData object to send the data to the API
+     
       const formData = new FormData();
       formData.append('rfpName', rfpName);
       formData.append('documents', documentFile);
       console.log(formData);
       try {
-        // Log the data being sent to the API
+        
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`);
       }
@@ -146,7 +146,7 @@ const ChatUI = () => {
     };
   
     useEffect(() => {
-      // Fetch the list of folders from your API and set it to the state.
+      
       const apiUrl = 'https://your-api-endpoint.com/get_folders';
       fetch(apiUrl)
         .then((response) => response.json())

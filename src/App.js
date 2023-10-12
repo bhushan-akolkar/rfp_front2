@@ -7,6 +7,8 @@ import Document from './Components/Similar_Document/Similar_Document';
 import similardocument from './Components/Similar_Document/show_similar_document';
 import Checklist from './Components/Checklist/checklist';
 import Getchecklist from './Components/Checklist/show_checklist';
+import LandingPage from './Components/Landing_Page/Landing_Page';
+
 
 // import SignInPage from './Components/Register/Register';
 
@@ -24,6 +26,7 @@ function App() {
           <Route path="/similardocument" component={similardocument} />
           <Route path="/checklist" component={Checklist} />
           <Route path="/getchecklist" component={Getchecklist} />
+          <Route path="/landingpage" component={LandingPage} />
 
         </Switch>
       </Router>
