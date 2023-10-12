@@ -21,7 +21,7 @@ const ChatUI = () => {
   };
   const [selectedOption, setSelectedOption] = useState(getDefaultOption());
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const [folderList, setFolderList] = useState([]);
   const handleOptionClick = (option) => {
     
     switch (option) {
@@ -145,7 +145,18 @@ const ChatUI = () => {
       }
     };
   
-  
+    useEffect(() => {
+      // Fetch the list of folders from your API and set it to the state.
+      const apiUrl = 'https://your-api-endpoint.com/get_folders';
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          setFolderList(data.docstack_list);
+        })
+        .catch((error) => {
+          console.error('Error fetching folder list:', error);
+        });
+    }, []);
     
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -187,6 +198,11 @@ const ChatUI = () => {
             <hr className="divider-below-recent-chat" />
           </div>
           </div>
+          {folderList.map((folder, index) => (
+            <div key={index} className="folder-item">
+              {folder}
+            </div>
+          ))}
       </div>
       <div className="bottom-left-section">
   <p className="bottom-left-text">Product From</p>
