@@ -19,14 +19,14 @@ function App() {
     <div className="app">
       <Router>
         <Switch>
-          <Route path="/" exact component={Login} />
+          <Route path="/login" exact component={Login} />
           <Route path="/register"  component={Register} />
           <Route path="/chat" component={ChatUI} />
           <Route path="/document" component={Document} />
           <Route path="/similardocument" component={similardocument} />
           <Route path="/checklist" component={Checklist} />
           <Route path="/getchecklist" component={Getchecklist} />
-          <Route path="/landingpage" component={LandingPage} />
+          <Route path="/" exact component={LandingPage} />
 
         </Switch>
       </Router>

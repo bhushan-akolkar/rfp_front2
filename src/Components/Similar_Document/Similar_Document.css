@@ -4,7 +4,32 @@
     height: 100vh;
     background-color: transparent;
   }
-  
+  .button-loader-container {
+    display: flex;
+    justify-content: flex-start; 
+    position: relative; 
+   }
+   .loader-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-right: 500px;
+    margin-top: 30px;
+   }
+   
+   
+   .loader {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+   }
+   
+   @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+   }
   
   .sidebar {
     width: 20%;
@@ -41,6 +66,36 @@
   
   .folder-item:last-child {
     border-bottom: none;
+  }
+  .bottom-left-section {
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    left: 0;
+    margin-left: 80px;
+    position: absolute;
+  }
+  
+  /* CSS for the "Product" text */
+  .bottom-left-text {
+    color: #1a1e2d;
+      font-size: 14px;
+      font-weight: 400;
+      height: 18px;
+      letter-spacing: 0;
+      margin-right: 5px;
+      max-width: 100%;
+      opacity: 1;
+      text-align: left;
+  }
+  
+  
+  .bottom-left-image {
+    height: 16px;
+      margin-top: 3px;
+      opacity: 1;
+      width: 70px;
+  
   }
   /* .logo {
     
@@ -385,7 +440,7 @@ input[type="file"] {
     align-items: center;
     justify-content: center;
     /* width: 90%; */
-    height: 200px;
+    height: 220px;
     margin-top: 10px;
     margin-left: 20px;
     margin-right: 20px;

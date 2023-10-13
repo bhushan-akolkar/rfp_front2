@@ -301,14 +301,16 @@ const ChatUI = () => {
         {/* <iframe src={document.data} title={`Uploaded Document ${index + 1}`} /> */}
       </div>
     ))}
-    <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
-            Get Similar Document
-          </button>
-          {isLoading && (
-      <div className="loader-container">
-        <div className="loader"></div>
-      </div>
-    )}
+    <div className="button-loader-container">
+ <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
+ Get Similar Document
+ </button>
+ {isLoading && (
+ <div className="loader-container">
+ <div className="loader"></div>
+ </div>
+ )}
+ </div>
      </div>
      )}
      

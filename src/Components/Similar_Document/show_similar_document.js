@@ -168,12 +168,15 @@ const ChatUI = () => {
       </div>
 
       <div className={`chat-content ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+      <div className="header-buttons">
+          
+          </div>
 
-        <div className="header-text">
-          <div className="ask-question-text">Ask a question</div>
+        <div className="header-textt">
+          <div className="ask-question-text">Similar Document</div>
         </div>
         <hr className="divider" />
-        <div className="chat-messages" ref={chatContainerRef}>
+        <div className="chat-messagess" ref={chatContainerRef}>
    
         <div className="api-response">
             {apiResponse.similar_documents.map((doc, index) => (

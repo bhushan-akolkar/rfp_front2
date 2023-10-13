@@ -29,11 +29,11 @@ const SignInPage = () => {
         <label className="input-label">Password</label>
         <input className="password-input" type="password" placeholder="Password" />
         <div className="password-links">
-          <a className="signup-link" href="/">Login</a>
+          <a className="signup-link" href="/login">Login</a>
           {/* <a className="reset-password-link" href="#resetpassword">Reset Password</a> */}
         </div>
         {/* <button> */}
-        <a href="/" className="submit-button" onClick={handleLogin}>
+        <a href="/login" className="submit-button" onClick={handleLogin}>
           Submit
           </a>
         {/* </button> */}

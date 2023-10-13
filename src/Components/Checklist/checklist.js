@@ -15,6 +15,7 @@ const ChatUI = () => {
     const chatContainerRef = useRef(null);
     const fileInputRef = useRef(null);
     const history = useHistory();
+    const [isLoading, setIsLoading] = useState(false);
     const location = useLocation();
     const [folderList, setFolderList] = useState([]);
   const toggleMobileMenu = () => {
@@ -135,16 +136,20 @@ const ChatUI = () => {
 
     const handleShowSimilarDocument = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch('https://your-api-endpoint.com/similar_documents');
         if (response.ok) {
           const data = await response.json();
+          setIsLoading(false);
           const apiResponseQueryParam = encodeURIComponent(JSON.stringify(data));
           window.location.href = `/getchecklist?apiResponse=${apiResponseQueryParam}`;
         } else {
           console.error('Error fetching similar documents.');
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error fetching similar documents:', error);
+        setIsLoading(false);
       }
     };
   
@@ -253,7 +258,7 @@ const ChatUI = () => {
           
         </div>
         <div className="header-textt">
-          <div className="ask-question-text">Similar Documents</div>
+          <div className="ask-question-text">Checklist</div>
         </div>
         <hr className="divider" />
 
@@ -298,9 +303,16 @@ const ChatUI = () => {
         {/* <iframe src={document.data} title={`Uploaded Document ${index + 1}`} /> */}
       </div>
     ))}
-    <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
-            Get checklist
-          </button>
+            <div className="button-loader-container">
+        <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
+        Get Checklist
+        </button>
+        {isLoading && (
+        <div className="loader-container">
+        <div className="loader"></div>
+        </div>
+        )}
+        </div>
      </div>
      )}
      

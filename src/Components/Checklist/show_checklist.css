@@ -5,7 +5,25 @@
     background-color: transparent;
   }
   
-  
+  .api-response {
+    padding: 30px; 
+    /* margin-top: 20px;  */
+   }
+   
+   
+   .response-item {
+    margin-bottom: 20px; 
+   }
+   
+   
+   .response-item a {
+    text-decoration: none;
+    color: #3498db;
+   }
+   
+   .response-item a:hover {
+    text-decoration: underline; 
+   }
   .sidebar {
     width: 20%;
     /* background-color: #252424; */
@@ -104,49 +122,46 @@
     padding: 8px 16px;
     cursor: pointer;
   } */
-  /* CSS for the bottom-left section */
-/* CSS for the bottom-left section */
-/* CSS for the bottom-left section */
-.bottom-left-section {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center; /* Center vertically */
-  margin-left: 80px; /* Adjust the margin as needed */
-}
-
-/* CSS for the "Product" text */
-.bottom-left-text {
-  width: 86px; /* Width of the text */
-  height: 18px; /* Height of the text */
-  font-size: 14px;
-  color: #1A1E2D; /* Text color */
-  font-weight: normal;
-  text-align: left;
-  letter-spacing: 0px;
-  opacity: 1;
-  /* margin-right: 10px;  */
-}
-
-/* CSS for the image */
-.bottom-left-image {
-  width: 70px; 
-  height: 16px; 
-  opacity: 1;
+ 
+  .bottom-left-section {
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    left: 0;
+    margin-left: 80px;
+    position: absolute;
+  }
   
-  margin-top: 3px;
+  /* CSS for the "Product" text */
+  .bottom-left-text {
+    color: #1a1e2d;
+      font-size: 14px;
+      font-weight: 400;
+      height: 18px;
+      letter-spacing: 0;
+      margin-right: 5px;
+      max-width: 100%;
+      opacity: 1;
+      text-align: left;
+  }
+  
+  
+  .bottom-left-image {
+    height: 16px;
+      margin-top: 3px;
+      opacity: 1;
+      width: 70px;
+  
+  }
 
-}
 
 
-
-  .header-text{
+  .header-textt{
     display: flex;
     justify-content: flex-start;
   align-items: center; 
   width: 50%;
-    margin-top: -30px; 
+    margin-top: 10px; 
   }
   .ask-question-text {
     text-align: left;
@@ -315,10 +330,10 @@
     
   }
   
-  .chat-messages {
+  .chat-messagess {
     flex-grow: 1;
-    margin-top: 10px;
-    padding: 16px;
+    /* margin-top: 10px;
+    padding: 16px; */
     overflow-y: auto;
     display: flex;
     flex-direction: column;

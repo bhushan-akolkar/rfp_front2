@@ -104,38 +104,35 @@
     padding: 8px 16px;
     cursor: pointer;
   } */
-  /* CSS for the bottom-left section */
-/* CSS for the bottom-left section */
-/* CSS for the bottom-left section */
+ 
 .bottom-left-section {
-  position: absolute;
+  align-items: center;
   bottom: 0;
-  left: 0;
   display: flex;
-  align-items: center; /* Center vertically */
-  margin-left: 80px; /* Adjust the margin as needed */
+  left: 0;
+  margin-left: 80px;
+  position: absolute;
 }
 
 /* CSS for the "Product" text */
 .bottom-left-text {
-  width: 86px; /* Width of the text */
-  height: 18px; /* Height of the text */
-  font-size: 14px;
-  color: #1A1E2D; /* Text color */
-  font-weight: normal;
-  text-align: left;
-  letter-spacing: 0px;
-  opacity: 1;
-  /* margin-right: 10px;  */
+  color: #1a1e2d;
+    font-size: 14px;
+    font-weight: 400;
+    height: 18px;
+    letter-spacing: 0;
+    margin-right: 5px;
+    max-width: 100%;
+    opacity: 1;
+    text-align: left;
 }
 
-/* CSS for the image */
+
 .bottom-left-image {
-  width: 70px; 
-  height: 16px; 
-  opacity: 1;
-  
-  margin-top: 3px;
+  height: 16px;
+    margin-top: 3px;
+    opacity: 1;
+    width: 70px;
 
 }
 
