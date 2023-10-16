@@ -7,21 +7,21 @@ import remarkHtml from 'remark-html';
 import remarkReact from 'remark-react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
-import './show_similar_document.css';
+import './Document.css';
 
 const ChatUI = () => {
   const chatContainerRef = useRef(null);
   const [isLogoutVisible, setIsLogoutVisible] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Loading indicator
+  const [isLoading, setIsLoading] = useState(false); 
   
   const location = useLocation();
   // const { apiResponse } = location.state;
   const queryParams = new URLSearchParams(location.search);
   const apiResponseQueryParam = queryParams.get('apiResponse');
   const apiResponse = JSON.parse(decodeURIComponent(apiResponseQueryParam));
-
+  const [folderList, setFolderList] = useState([]);
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
@@ -45,8 +45,8 @@ const ChatUI = () => {
         window.location.href = '/all';;
         break;
         case ' Document':
-          window.location.href = '/folder';;
-          break; 
+            window.location.href = '/folder';;
+            break;  
       default:
         break;
     }
@@ -76,14 +76,46 @@ const ChatUI = () => {
         return 'Similar Document';
       case '/getchecklist':
         return 'Checklist';
-        case '/folder':
-          return 'Document';  
-      
+      case '/folder':
+            return 'Document';  
+        
       default:
         return 'Prompt'; 
     }
   }
- 
+
+  
+  const handleShowSimilarDocument = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch('https://your-api-endpoint.com/similar_documents');
+      if (response.ok) {
+        const data = await response.json();
+        setIsLoading(false);
+        const apiResponseQueryParam = encodeURIComponent(JSON.stringify(data));
+        window.location.href = `/similardocument?apiResponse=${apiResponseQueryParam}`;
+      } else {
+        console.error('Error fetching similar documents.');
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Error fetching similar documents:', error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+      
+    const apiUrl = 'https://your-api-endpoint.com/get_folders';
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setFolderList(data.docstack_list);
+      })
+      .catch((error) => {
+        console.error('Error fetching folder list:', error);
+      });
+  }, []);
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -130,6 +162,11 @@ const ChatUI = () => {
           </div>
           
         </div>
+        {folderList.map((folder, index) => (
+            <div key={index} className="folder-item">
+              {folder}
+            </div>
+          ))}
       </div>
       <div className="bottom-left-section">
   <p className="bottom-left-text">Product From</p>
@@ -189,13 +226,20 @@ const ChatUI = () => {
             {apiResponse.similar_documents.map((doc, index) => (
             <div key={index} className="response-item">
 
-            <h3>Document Name</h3>
-            <div>{doc['Document Name']}</div>
-
             <h3>Summary</h3> 
             <div>{doc['Summary']}</div>
             
             <hr />
+            <div className="button-loader-container">
+                <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
+                Get Similar Document
+                </button>
+                {isLoading && (
+                <div className="loader-container">
+                <div className="loader"></div>
+            </div>
+            )}
+             </div>
             </div>
       ))}
   </div>

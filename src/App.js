@@ -7,6 +7,7 @@ import Document from './Components/Similar_Document/Similar_Document';
 import similardocument from './Components/Similar_Document/show_similar_document';
 import Checklist from './Components/Checklist/checklist';
 import Getchecklist from './Components/Checklist/show_checklist';
+import Folder from './Components/Document/Document';
 import LandingPage from './Components/Landing_Page/Landing_Page';
 
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/similardocument" component={similardocument} />
           <Route path="/checklist" component={Checklist} />
           <Route path="/getchecklist" component={Getchecklist} />
+          <Route path="/folder" component={Folder} />
           <Route path="/" exact component={LandingPage} />
 
         </Switch>
