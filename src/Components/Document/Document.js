@@ -15,7 +15,7 @@ const ChatUI = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false); 
-  
+  const [secondApiResponse, setSecondApiResponse] = useState(null);
   const location = useLocation();
   // const { apiResponse } = location.state;
   const queryParams = new URLSearchParams(location.search);
@@ -122,6 +122,38 @@ const ChatUI = () => {
     }
   };
 
+  const handleFolderClick = async (folderName) => {
+    try {
+      // Make an API call to send the clicked folder name
+      const response = await fetch('https://your-api-endpoint.com/send_folder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ folderName }),
+      });
+
+      if (response.ok) {
+        
+        const secondApiResponse = await fetch('https://your-api-endpoint.com/second_api', {
+          method: 'GET',
+        });
+  
+        if (secondApiResponse.ok) {
+          const responseData = await secondApiResponse.json();
+         
+          setSecondApiResponse(responseData);
+        } else {
+          console.error('Error fetching response from the second API.');
+        }
+      } else {
+        console.error('Error sending folder name to the API.');
+      }
+    } catch (error) {
+      console.error('Error handling folder click:', error);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('userToken');
     window.location.href = '/login';
@@ -163,10 +195,14 @@ const ChatUI = () => {
           
         </div>
         {folderList.map((folder, index) => (
-            <div key={index} className="folder-item">
-              {folder}
-            </div>
-          ))}
+          <div
+            key={index}
+            className="folder-item"
+            onClick={() => handleFolderClick(folder)} 
+          >
+            {folder}
+          </div>
+        ))}
       </div>
       <div className="bottom-left-section">
   <p className="bottom-left-text">Product From</p>
@@ -223,14 +259,26 @@ const ChatUI = () => {
         <div className="chat-messagess" ref={chatContainerRef}>
    
         <div className="api-response">
-            {apiResponse.similar_documents.map((doc, index) => (
+            {/* {apiResponse.similar_documents.map((doc, index) => (
             <div key={index} className="response-item">
 
             <h3>Summary</h3> 
-            <div>{doc['Summary']}</div>
+            <div>{doc['Summary']}</div> */}
+             {secondApiResponse ? ( 
+          <div className="response-item">
+            <h3>Summary</h3>
+            <div>{secondApiResponse['Summary']}</div>
+          </div>
+        ) : (
+          <div className="no-response">No response available</div>
+        )}
             
             <hr />
-            <div className="button-loader-container">
+            
+            {/* </div>
+      ))} */}
+  </div>
+  <div className="button-loader-container">
                 <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
                 Get Similar Document
                 </button>
@@ -240,9 +288,6 @@ const ChatUI = () => {
             </div>
             )}
              </div>
-            </div>
-      ))}
-  </div>
   
 
           <div ref={scrollToBottom}></div>
