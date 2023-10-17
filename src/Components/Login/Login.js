@@ -5,13 +5,12 @@ import { useHistory } from 'react-router-dom';
 
 const SignInPage = () => {
  
-  const history = useHistory(); // Initialize useHistory
+  const history = useHistory(); 
 
 
 
   const handleLogin = () => {
-    // Add your login logic here if needed
-    // Redirect to the "/chat" page when the login button is clicked
+   
     window.location.href = '/chat';
   };
   return (
