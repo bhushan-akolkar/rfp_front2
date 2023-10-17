@@ -77,9 +77,9 @@ const ChatUI = () => {
       case 'All Documents':
         window.location.href = '/all';;
         break;
-        case 'Document':
-          window.location.href = '/folder';;
-          break; 
+        // case 'Document':
+        //   window.location.href = '/folder';;
+        //   break; 
       default:
         break;
     }
@@ -103,8 +103,8 @@ const ChatUI = () => {
         return 'Checklist';
       case '/all_documents':
         return 'All Documents';
-        case '/folder':
-          return 'Document';  
+        // case '/folder':
+        //   return 'Document';  
       
       default:
         return 'Prompt'; 
@@ -439,7 +439,7 @@ const ChatUI = () => {
             <div onClick={() => handleOptionClick('Similar Document')}>Similar Document</div>
             <div onClick={() => handleOptionClick('Checklist')}>Checklist</div>
             <div onClick={() => handleOptionClick('All Documents')}>All Documents</div>
-            <div onClick={() => handleOptionClick('Document')}>Document</div>
+            {/* <div onClick={() => handleOptionClick('Document')}>Document</div> */}
           </div>
         )}
       </div>

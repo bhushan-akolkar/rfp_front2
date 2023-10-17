@@ -16,11 +16,12 @@ const ChatUI = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false); 
   const [secondApiResponse, setSecondApiResponse] = useState(null);
+  const [responseData, setResponseData] = useState(null);
   const location = useLocation();
   // const { apiResponse } = location.state;
-  const queryParams = new URLSearchParams(location.search);
-  const apiResponseQueryParam = queryParams.get('apiResponse');
-  const apiResponse = JSON.parse(decodeURIComponent(apiResponseQueryParam));
+  // const queryParams = new URLSearchParams(location.search);
+  // const apiResponseQueryParam = queryParams.get('apiResponse');
+  // const apiResponse = JSON.parse(decodeURIComponent(apiResponseQueryParam));
   const [folderList, setFolderList] = useState([]);
   
   const toggleMobileMenu = () => {
@@ -85,24 +86,6 @@ const ChatUI = () => {
   }
 
   
-  const handleShowSimilarDocument = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch('https://your-api-endpoint.com/similar_documents');
-      if (response.ok) {
-        const data = await response.json();
-        setIsLoading(false);
-        const apiResponseQueryParam = encodeURIComponent(JSON.stringify(data));
-        window.location.href = `/similardocument?apiResponse=${apiResponseQueryParam}`;
-      } else {
-        console.error('Error fetching similar documents.');
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error('Error fetching similar documents:', error);
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
       
@@ -124,7 +107,7 @@ const ChatUI = () => {
 
   const handleFolderClick = async (folderName) => {
     try {
-      // Make an API call to send the clicked folder name
+      
       const response = await fetch('https://your-api-endpoint.com/send_folder', {
         method: 'POST',
         headers: {
@@ -140,9 +123,9 @@ const ChatUI = () => {
         });
   
         if (secondApiResponse.ok) {
-          const responseData = await secondApiResponse.json();
-         
-          setSecondApiResponse(responseData);
+          const responseData = await secondApiResponse.json(); 
+          console.log('Response Data in API:', responseData);
+          setResponseData(responseData);
         } else {
           console.error('Error fetching response from the second API.');
         }
@@ -167,7 +150,7 @@ const ChatUI = () => {
     setIsDarkMode(!isDarkMode);
   };
 
- 
+  console.log('Response Data in Component:', responseData);
   return (
     <div className={`chat-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <button
@@ -259,26 +242,37 @@ const ChatUI = () => {
         <div className="chat-messagess" ref={chatContainerRef}>
    
         <div className="api-response">
-            {/* {apiResponse.similar_documents.map((doc, index) => (
-            <div key={index} className="response-item">
+        {/* {responseData !== null  ( */}
+        {responseData  (
+            responseData.map((data, index) => (
+              <div key={index} className="response-item">
+                <h3>Document Name</h3>
+                <div>{data['Document Name']}</div>
 
-            <h3>Summary</h3> 
-            <div>{doc['Summary']}</div> */}
-             {secondApiResponse ? ( 
-          <div className="response-item">
-            <h3>Summary</h3>
-            <div>{secondApiResponse['Summary']}</div>
-          </div>
-        ) : (
-          <div className="no-response">No response available</div>
-        )}
-            
-            <hr />
-            
-            {/* </div>
-      ))} */}
+                <h3>Summary</h3>
+                <div>{data['Summary']}</div>
+
+                <h3>Links</h3>
+                <div>
+                  {data.link.map((link, linkIndex) => (
+                    <a
+                      key={linkIndex}
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Link {linkIndex + 1}
+                    </a>
+                  ))}
+                </div>
+
+                <hr />
+              </div>
+            ))
+          ) }
+        
   </div>
-  <div className="button-loader-container">
+  {/* <div className="button-loader-container">
                 <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
                 Get Similar Document
                 </button>
@@ -287,7 +281,7 @@ const ChatUI = () => {
                 <div className="loader"></div>
             </div>
             )}
-             </div>
+             </div> */}
   
 
           <div ref={scrollToBottom}></div>

@@ -8,7 +8,7 @@ import './Similar_Document.css';
 const ChatUI = () => {
   const [rfpName, setRfpName] = useState('');
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
-  const [documentFile, setDocumentFile] = useState(null); // Add state for the uploaded document
+  const [documentFile, setDocumentFile] = useState(null); 
     const [isLogoutVisible, setIsLogoutVisible] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,6 +17,9 @@ const ChatUI = () => {
     const history = useHistory();
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(false);
+    const [isDocumentUploadVisible, setIsDocumentUploadVisible] = useState(false);
+    const [secondApiResponse, setSecondApiResponse] = useState(null);
+  const [responseData, setResponseData] = useState(null);
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -38,9 +41,9 @@ const ChatUI = () => {
       case 'All Documents':
         window.location.href = '/all';;
         break;
-        case ' Document':
-            window.location.href = '/folder';;
-            break; 
+        // case 'Document':
+        //     window.location.href = '/folder';;
+        //     break; 
       default:
         break;
     }
@@ -74,11 +77,11 @@ const ChatUI = () => {
             return 'Similar Document';
           case '/getchecklist':
             return 'Checklist';
-            case '/folder':
-              return 'Document';  
+            // case '/folder':
+            //   return 'Document';  
           
       default:
-        return 'Prompt'; // Default to 'Prompt' if the path doesn't match any known option
+        return 'Prompt'; 
     }
   }
   const handleDocumentUpload = (event) => {
@@ -174,6 +177,39 @@ const ChatUI = () => {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   };
+  
+  const handleFolderClick = async (folderName) => {
+    try {
+      
+      const response = await fetch('https://your-api-endpoint.com/send_folder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ folderName }),
+      });
+
+      if (response.ok) {
+        
+        const secondApiResponse = await fetch('https://your-api-endpoint.com/second_api', {
+          method: 'GET',
+        });
+  
+        if (secondApiResponse.ok) {
+          const responseData = await secondApiResponse.json(); 
+          console.log('Response Data in API:', responseData);
+          setResponseData(responseData);
+          setIsDocumentUploadVisible(responseData && responseData.similar_documents && responseData.similar_documents.length > 0);
+        } else {
+          console.error('Error fetching response from the second API.');
+        }
+      } else {
+        console.error('Error sending folder name to the API.');
+      }
+    } catch (error) {
+      console.error('Error handling folder click:', error);
+    }
+  };
 
   const handleLogout = () => {
    
@@ -211,10 +247,14 @@ const ChatUI = () => {
           </div>
           </div>
           {folderList.map((folder, index) => (
-            <div key={index} className="folder-item">
-              {folder}
-            </div>
-          ))}
+          <div
+            key={index}
+            className="folder-item"
+            onClick={() => handleFolderClick(folder)} 
+          >
+            {folder}
+          </div>
+        ))}
       </div>
       <div className="bottom-left-section">
   <p className="bottom-left-text">Product From</p>
@@ -242,7 +282,7 @@ const ChatUI = () => {
             <div onClick={() => handleOptionClick('Similar Document')}>Similar Document</div>
             <div onClick={() => handleOptionClick('Checklist')}>Checklist</div>
             <div onClick={() => handleOptionClick('All Documents')}>All Documents</div>
-            <div onClick={() => handleOptionClick('Document')}>Document</div>
+            {/* <div onClick={() => handleOptionClick('Document')}>Document</div> */}
           </div>
         )}
       </div>
@@ -266,7 +306,7 @@ const ChatUI = () => {
           <div className="ask-question-text">Similar Documents</div>
         </div>
         <hr className="divider" />
-
+        {isDocumentUploadVisible ? (
         <div className="document-upload-container">
         <img src="file-plus.png" alt="img" className="docimage" />
         <div className="upload-text">
@@ -297,7 +337,33 @@ const ChatUI = () => {
             Upload Document
           </button>
         </div>
+         ) : null}
+            <div className="api-response">
+          {responseData && responseData.similar_documents && responseData.similar_documents.length > 0 ? (
+          responseData.similar_documents.map((doc, index) => (
+          <div key={index} className="response-item">
+          <h3>Document Name</h3>
+          <div>{doc['Document Name']}</div>
 
+          <h3>Summary</h3>
+          <div>{doc['Summary']}</div>
+
+          <h3>Links</h3>
+          <div>
+          {doc.link.map((link, linkIndex) => (
+          <a key={linkIndex} href={link} target="_blank" rel="noopener noreferrer">
+          Link {linkIndex + 1}
+          </a>
+          ))}
+          </div>
+
+          <hr />
+          </div>
+          ))
+          ) : (
+          <div className="no-response">No response available</div>
+          )}
+          </div>
         {uploadedDocuments.length > 0 && (
   <div className="uploaded-documents">
     <div className="uploaded-document-title">Uploaded Documents:</div>
