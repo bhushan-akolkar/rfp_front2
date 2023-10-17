@@ -8,7 +8,7 @@ import './checklist.css';
 const ChatUI = () => {
   const [rfpName, setRfpName] = useState('');
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
-  const [documentFile, setDocumentFile] = useState(null); // Add state for the uploaded document
+  const [documentFile, setDocumentFile] = useState(null); 
     const [isLogoutVisible, setIsLogoutVisible] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -18,7 +18,7 @@ const ChatUI = () => {
     const [isLoading, setIsLoading] = useState(false);
     const location = useLocation();
     const [folderList, setFolderList] = useState([]);
-    const [isDocumentUploadVisible, setIsDocumentUploadVisible] = useState(false);
+    const [isDocumentUploadVisible, setIsDocumentUploadVisible] = useState(true);
     const [secondApiResponse, setSecondApiResponse] = useState(null);
   const [responseData, setResponseData] = useState(null);
   const toggleMobileMenu = () => {

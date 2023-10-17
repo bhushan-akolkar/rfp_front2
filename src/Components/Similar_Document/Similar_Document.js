@@ -17,7 +17,7 @@ const ChatUI = () => {
     const history = useHistory();
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(false);
-    const [isDocumentUploadVisible, setIsDocumentUploadVisible] = useState(false);
+    const [isDocumentUploadVisible, setIsDocumentUploadVisible] = useState(true);
     const [secondApiResponse, setSecondApiResponse] = useState(null);
   const [responseData, setResponseData] = useState(null);
   const toggleMobileMenu = () => {
