@@ -23,6 +23,7 @@ const ChatUI = () => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
+  const [searchInput, setSearchInput] = useState('');
   const [selectedOption, setSelectedOption] = useState(getDefaultOption());
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [folderList, setFolderList] = useState([]);
@@ -159,6 +160,15 @@ const ChatUI = () => {
       }
     };
   
+    const handleSearchInput = (e) => {
+      setSearchInput(e.target.value); 
+    };
+  
+    
+    const filteredFolderList = folderList.filter((folder) =>
+      folder.toLowerCase().startsWith(searchInput.toLowerCase())
+    );
+
     useEffect(() => {
       
       const apiUrl = 'https://your-api-endpoint.com/get_folders';
@@ -180,7 +190,7 @@ const ChatUI = () => {
   
   const handleFolderClick = async (folderName) => {
     try {
-      
+      setIsDocumentUploadVisible(false);
       const response = await fetch('https://your-api-endpoint.com/send_folder', {
         method: 'POST',
         headers: {
@@ -199,7 +209,7 @@ const ChatUI = () => {
           const responseData = await secondApiResponse.json(); 
           console.log('Response Data in API:', responseData);
           setResponseData(responseData);
-          setIsDocumentUploadVisible(responseData && responseData.similar_documents && responseData.similar_documents.length > 0);
+          setIsDocumentUploadVisible(false);
         } else {
           console.error('Error fetching response from the second API.');
         }
@@ -246,6 +256,17 @@ const ChatUI = () => {
             <hr className="divider-below-recent-chat" />
           </div>
           </div>
+          <div className="search-bar">
+          <input
+          type="text"
+          value={searchInput}
+          onChange={handleSearchInput}
+          placeholder="Search folders"
+          className="search-input"
+        />
+          
+        </div>
+         
           {folderList.map((folder, index) => (
           <div
             key={index}
@@ -306,7 +327,7 @@ const ChatUI = () => {
           <div className="ask-question-text">Similar Documents</div>
         </div>
         <hr className="divider" />
-        {isDocumentUploadVisible ? (
+        {isDocumentUploadVisible && (
         <div className="document-upload-container">
         <img src="file-plus.png" alt="img" className="docimage" />
         <div className="upload-text">
@@ -337,9 +358,9 @@ const ChatUI = () => {
             Upload Document
           </button>
         </div>
-         ) : null}
+         ) }
             <div className="api-response">
-          {responseData && responseData.similar_documents && responseData.similar_documents.length > 0 ? (
+          {responseData && responseData.similar_documents && responseData.similar_documents.length > 0  (
           responseData.similar_documents.map((doc, index) => (
           <div key={index} className="response-item">
           <h3>Document Name</h3>
@@ -360,9 +381,7 @@ const ChatUI = () => {
           <hr />
           </div>
           ))
-          ) : (
-          <div className="no-response">No response available</div>
-          )}
+          ) }
           </div>
         {uploadedDocuments.length > 0 && (
   <div className="uploaded-documents">

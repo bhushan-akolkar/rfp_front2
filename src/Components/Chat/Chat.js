@@ -60,7 +60,11 @@ const ChatUI = () => {
    const [isLoading, setIsLoading] = useState(false); 
    const [selectedOption, setSelectedOption] = useState(getDefaultOption());
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isUserProfileDropdownOpen, setIsUserProfileDropdownOpen] = useState(false);
 
+  const toggleUserProfileDropdown = () => {
+    setIsUserProfileDropdownOpen(!isUserProfileDropdownOpen);
+  };
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     setIsDropdownOpen(false);
@@ -84,6 +88,21 @@ const ChatUI = () => {
         break;
     }
     
+  };
+  const handleUserOptionClick = (option) => {
+    switch (option) {
+      case 'Profile':
+        window.location.href = '/profile';
+        break;
+      case 'Logout':
+        window.location.href = '/login';
+        break;
+      case 'Sidebar Toggle':
+        // Add your logic for sidebar toggle here
+        break;
+      default:
+        break;
+    }
   };
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -443,16 +462,23 @@ const ChatUI = () => {
           </div>
         )}
       </div>
-        <button className="user-profile-button" type="button" onClick={toggleLogout}>
+        <button className="user-profile-button" onClick={toggleUserProfileDropdown}>
           <div className="user-profile-image">
             <img src={process.env.PUBLIC_URL + '/user-3-line.png'} alt="User Profile" />
           </div>
         </button>
-        {isLogoutVisible && (
+        {/* {isLogoutVisible && (
           <button className="logout-button" onClick={handleLogout}>
             Logout
           </button>
-        )}
+        )} */}
+        {isUserProfileDropdownOpen && (
+        <div className="user-profile-dropdown">
+          <div onClick={() => handleUserOptionClick('Profile')}>Profile</div>
+          <div onClick={() => handleUserOptionClick('Logout')}>Logout</div>
+          <div onClick={() => handleUserOptionClick('Sidebar Toggle')}>Sidebar Toggle</div>
+        </div>
+      )}
       </div>
 
       <div className={`chat-content ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>

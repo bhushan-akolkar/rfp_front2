@@ -236,6 +236,33 @@ width: 50%;
   opacity: 0.42;
 }
 
+.folder-item {
+  text-align: center; 
+  padding: 8px 0; 
+  border-bottom: 1px solid #ccc; 
+  cursor: pointer; 
+}
+
+
+.folder-item:last-child {
+  border-bottom: none;
+}
+.search-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
 
 /* .new-chat-button,
 .clear-chat-button {

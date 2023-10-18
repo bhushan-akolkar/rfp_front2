@@ -24,7 +24,7 @@ const ChatUI = () => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
-
+  const [searchInput, setSearchInput] = useState('');
   const [selectedOption, setSelectedOption] = useState(getDefaultOption());
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -161,7 +161,14 @@ const ChatUI = () => {
         setIsLoading(false);
       }
     };
+    const handleSearchInput = (e) => {
+      setSearchInput(e.target.value); 
+    };
   
+    
+    const filteredFolderList = folderList.filter((folder) =>
+      folder.toLowerCase().startsWith(searchInput.toLowerCase())
+    );
     useEffect(() => {
       
       const apiUrl = 'https://your-api-endpoint.com/get_folders';
@@ -249,6 +256,16 @@ const ChatUI = () => {
             <hr className="divider-below-recent-chat" />
           </div>
           </div>
+          <div className="search-bar">
+          <input
+          type="text"
+          value={searchInput}
+          onChange={handleSearchInput}
+          placeholder="Search folders"
+          className="search-input"
+        />
+          
+        </div>
           {folderList.map((folder, index) => (
           <div
             key={index}
