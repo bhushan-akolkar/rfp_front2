@@ -27,7 +27,11 @@ const ChatUI = () => {
   const [searchInput, setSearchInput] = useState('');
   const [selectedOption, setSelectedOption] = useState(getDefaultOption());
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isUserProfileDropdownOpen, setIsUserProfileDropdownOpen] = useState(false);
 
+  const toggleUserProfileDropdown = () => {
+    setIsUserProfileDropdownOpen(!isUserProfileDropdownOpen);
+  };
   const handleOptionClick = (option) => {
     
     switch (option) {
@@ -52,6 +56,21 @@ const ChatUI = () => {
     setSelectedOption(option);
     setIsDropdownOpen(false);
     
+  };
+  const handleUserOptionClick = (option) => {
+    switch (option) {
+      case 'Profile':
+        window.location.href = '/profile';
+        break;
+      case 'Logout':
+        window.location.href = '/login';
+        break;
+      case 'Sidebar Toggle':
+        // Add your logic for sidebar toggle here
+        break;
+      default:
+        break;
+    }
   };
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -307,7 +326,7 @@ const ChatUI = () => {
           </div>
         )}
       </div>
-      <button className="user-profile-button" type="button" onClick={toggleLogout}>
+      <button className="user-profile-button" onClick={toggleUserProfileDropdown}>
           <div className="user-profile-image">
             <img src={process.env.PUBLIC_URL + '/user-3-line.png'} alt="User Profile" />
           </div>

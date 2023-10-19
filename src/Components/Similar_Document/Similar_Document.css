@@ -5,6 +5,32 @@
   background-color: transparent;
 }
 
+.button-loader-container {
+  display: flex;
+  justify-content: flex-start; 
+  position: relative; 
+ }
+ .loader-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-right: 500px;
+  margin-top: 30px;
+ }
+ 
+ 
+ .loader {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+ }
+ 
+ @keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+ }
 .api-response {
   padding: 30px; 
   /* margin-top: 20px;  */
@@ -60,7 +86,7 @@
   height: 27px;
   color: var(--unnamed-color-1b88e6);
   text-align: left;
-  font: normal normal bold 21px/27px Red Hat Display;
+  font: normal normal bold 21px/27px "Red Hat Display", sans-serif;
   letter-spacing: 0px;
   color: #1B88E6;
   opacity: 1;
@@ -78,7 +104,7 @@
   height: 14px;
   color: var(--unnamed-color-0c111b);
   text-align: left;
-  font: normal normal 600 11px/14px Red Hat Display;
+  font: normal normal 600 11px/14px "Red Hat Display", sans-serif;
   letter-spacing: 0px;
   color: #0C111B;
   opacity: 1;
@@ -94,10 +120,10 @@
 
 .recent-chat-labell {
   margin-top: 10px;
-  width: 134px;
+  width: 154px;
   height: 26px;
   text-align: left;
-  font: normal normal 600 20px/26px Red Hat Display;
+  font: normal normal 600 20px/26px "Red Hat Display", sans-serif;
   letter-spacing: 0px;
   color: #0C111B;
   opacity: 1 !important;
@@ -137,9 +163,9 @@
   color: #1a1e2d;
     font-size: 14px;
     font-weight: 400;
-    height: 18px;
+    height: 10px;
     letter-spacing: 0;
-    margin-right: 5px;
+    margin-right: 8px;
     max-width: 100%;
     opacity: 1;
     text-align: left;
@@ -148,7 +174,7 @@
 
 .bottom-left-image {
   height: 16px;
-    margin-top: 3px;
+    margin-top: -15px;
     opacity: 1;
     width: 70px;
 
@@ -166,7 +192,7 @@ width: 50%;
 .ask-question-text {
   text-align: left;
   color: #0C111B;
-  font: normal normal 600 20px/26px Red Hat Display;
+  font:normal normal 600 20px/26px "Red Hat Display", sans-serif;
   letter-spacing: 0px;
   opacity: 1;
   /* font-weight: bold;  */
@@ -919,7 +945,44 @@ animation: blink 1s infinite;
   background: transparent;
   object-fit: cover;
 }
+.user-profile-dropdown {
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  right: 0;
+  top: 100%;
+  /* display: none; */
+}
 
+.user-profile-dropdown div {
+  list-style: none;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-profile-dropdown div {
+  padding: 12px 16px;
+  text-decoration: none !important;; 
+  display: block;
+  color: #333;
+  cursor: pointer;
+}
+
+.user-profile-dropdown div:hover {
+  background-color: #ddd;
+}
+
+.user-profile-dropdown.active {
+  display: block;
+}
+
+.user-profile-dropdown div.active {
+  background-color: #3498db;
+  color: #fff;
+}
 .logout-button {
   
   background-color: #dc3545;
@@ -1010,7 +1073,7 @@ background:linear-gradient(#dde3f1,white) ;
   height: 14px;
   color: var(--unnamed-color-0c111b);
   text-align: left;
-  font: normal normal 600 11px/14px Red Hat Display;
+  font: normal normal 600 11px/14px "Red Hat Display", sans-serif;
   letter-spacing: 0px;
   color: #0C111B;
   opacity: 1;
@@ -1076,7 +1139,7 @@ background:linear-gradient(#dde3f1,white) ;
   margin-bottom: 10px;
 }
 .light-mode .input-box {
-  height: 30px;
+  height: 45px;
   flex-grow: 1;
   padding: 8px;
   border: 1px solid #ccc;
@@ -1238,7 +1301,7 @@ margin-right: 10px;
 .dropbtn {
 background-color:transparent; 
 color: #100e0e; 
-font-size: 15px;
+font:normal normal 600 18px/23px "Red Hat Display", sans-serif;
 padding: 10px 20px; 
 border: none; 
 border-radius: 5px; 

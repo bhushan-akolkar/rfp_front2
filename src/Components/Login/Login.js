@@ -20,7 +20,8 @@ const SignInPage = () => {
         <div className="subtitle">Ask your query about Credit Card compliance, we will get the best relevant compliance guideline from RBI</div>
       </div>
       <div className="right-container">
-        <h2 className="sign-up">Sign In</h2>
+        <div className='sign-up'>
+        <h2>Sign In</h2>
         <label className="input-label">Email ID</label>
         <input className="email-input" type="text" placeholder="Enter your email" />
         <label className="input-label">Password</label>
@@ -42,6 +43,8 @@ const SignInPage = () => {
         </a>
       </div>
     </div>
+    </div>
+    
        
         
       </div>

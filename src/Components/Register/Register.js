@@ -21,7 +21,8 @@ const SignInPage = () => {
         <div className="subtitle">Ask your query about Credit Card compliance, we will get the best relevant compliance guideline from RBI</div>
       </div>
       <div className="right-containerr">
-        <h2 className="sign-up">Sign Up</h2>
+        <div className='sign-up'>
+        <h2 >Sign Up</h2>
         <label className="input-label">Name</label>
         <input className="name-input" type="text" placeholder="Enter your Name" />
         <label className="input-label">Email ID</label>
@@ -29,15 +30,21 @@ const SignInPage = () => {
         <label className="input-label">Password</label>
         <input className="password-input" type="password" placeholder="Password" />
         <div className="password-links">
-          <a className="signup-link" href="/login">Login</a>
-          {/* <a className="reset-password-link" href="#resetpassword">Reset Password</a> */}
+          <a className="signup-link" href="/login">Log In</a>
+          
         </div>
-        {/* <button> */}
+       
+        <div className="button-container">
+      <div className="submit-container">
         <a href="/login" className="submit-button" onClick={handleLogin}>
           Submit
-          </a>
-        {/* </button> */}
+        </a>
+      </div>
+      
+    </div>
+      
         
+      </div>
       </div>
     </div>
   );

@@ -498,7 +498,7 @@ const ChatUI = () => {
         <div className={`chat-placeholder ${chatPlaceholder ? 'visible' : ''}`}>
           {chatPlaceholder}
         </div>
-        {isLoading ? ( // Loading indicator
+        {isLoading ? ( 
   <div className="loading-indicator">...</div>
 ) : (
           messages.map((message, index) => (
