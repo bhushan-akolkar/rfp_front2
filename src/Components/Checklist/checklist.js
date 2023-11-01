@@ -229,6 +229,8 @@ const ChatUI = () => {
     const handleFolderClick = async (folderName) => {
       try {
         setIsChecklistVisible(false);
+        setIsDocumentUploadVisible(false);
+        setIsLoading(true);
         const response = await fetch('/get_document_name', {
           method: 'POST',
           headers: {
@@ -256,6 +258,9 @@ const ChatUI = () => {
         }
       } catch (error) {
         console.error('Error handling folder click:', error);
+      }
+      finally {
+        setIsLoading(false); 
       }
     };
   
@@ -375,13 +380,13 @@ const ChatUI = () => {
         <div className="document-upload-container">
         <img src="file-plus.png" alt="img" className="docimage" />
         <div className="upload-text">
-    Drag and drop your document here or upload.
-  </div>
-  <div className="file-size-text">
-    Max. file size 24 MB.
-  </div>
-  <div className="input-container">
-  <input
+            Drag and drop your document here or upload.
+          </div>
+          <div className="file-size-text">
+            Max. file size 24 MB.
+          </div>
+          <div className="input-container">
+          <input
           type="text"
           value={rfpName}
           onChange={(e) => setRfpName(e.target.value)}
@@ -403,8 +408,10 @@ const ChatUI = () => {
           </button>
         </div>
  ) : null}
-
-<div className="api-response">
+  {isLoading ? (
+          <div className="loading-message">Generating Response...</div>
+        ) : (
+    <div className="api-response">
           {responseData && responseData.Checklist && responseData.Checklist.length > 0 ? (
           responseData.Checklist.map((doc, index) => (
           <div key={index} className="response-item">
@@ -439,22 +446,12 @@ const ChatUI = () => {
   </div>
 )}
 
-          {/* <h3>Links</h3>
-          <div>
-          {doc.link.map((link, linkIndex) => (
-          <a key={linkIndex} href={link} target="_blank" rel="noopener noreferrer">
-          Link {linkIndex + 1}
-          </a>
-          ))}
-          </div> */}
-
-          <hr />
+        <hr />
           </div>
           ))
-          ) : (
-          <div className="no-response"></div>
-          )}
+          ) : null}
           </div>
+           )}
           {isUploadedDocumentsVisible && (
         uploadedDocuments.length > 0 && (
   <div className="uploaded-documents">
@@ -528,9 +525,8 @@ const ChatUI = () => {
           <hr />
           </div>
           ))
-          ) : (
-          <div className="no-response"></div>
-          ))}
+          ) :null
+          )}
           </div>
         <div ref={chatContainerRef}></div>
       </div>

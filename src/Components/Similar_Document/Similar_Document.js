@@ -18,6 +18,9 @@ const ChatUI = () => {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(false);
     const [isDocumentUploadVisible, setIsDocumentUploadVisible] = useState(true);
+    const [isUploadedDocumentsVisible, setIsUploadedDocumentsVisible] = useState(true);
+    const [similarResponse, setsimilarResponse] = useState(null);
+  const [isSimilarVisible, setIsSimilarVisible] = useState(false);
     const [secondApiResponse, setSecondApiResponse] = useState(null);
   const [responseData, setResponseData] = useState(null);
   const toggleMobileMenu = () => {
@@ -162,15 +165,36 @@ const ChatUI = () => {
       }
     };
 
+    // const handleShowSimilarDocument = async () => {
+    //   try {
+    //     setIsLoading(true);
+    //     const response = await fetch('/doc_analyser/docstack/similar');
+    //     if (response.ok) {
+    //       const data = await response.json();
+    //       setIsLoading(false);
+    //       const apiResponseQueryParam = encodeURIComponent(JSON.stringify(data));
+    //       window.location.href = `/similardocument?apiResponse=${apiResponseQueryParam}`;
+    //     } else {
+    //       console.error('Error fetching similar documents.');
+    //       setIsLoading(false);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error fetching similar documents:', error);
+    //     setIsLoading(false);
+    //   }
+    // };
+  
     const handleShowSimilarDocument = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('/doc_analyser/docstack/similar');
+        const response = await fetch('/doc_analyser/docstack/checkpoints');
         if (response.ok) {
           const data = await response.json();
+          setsimilarResponse(data);
+          setIsSimilarVisible(true); 
+          setIsDocumentUploadVisible(false); 
+          setIsUploadedDocumentsVisible(false);
           setIsLoading(false);
-          const apiResponseQueryParam = encodeURIComponent(JSON.stringify(data));
-          window.location.href = `/similardocument?apiResponse=${apiResponseQueryParam}`;
         } else {
           console.error('Error fetching similar documents.');
           setIsLoading(false);
@@ -180,7 +204,7 @@ const ChatUI = () => {
         setIsLoading(false);
       }
     };
-  
+
     const handleSearchInput = (e) => {
       setSearchInput(e.target.value); 
     };
@@ -211,6 +235,7 @@ const ChatUI = () => {
   
   const handleFolderClick = async (folderName) => {
     try {
+      setIsSimilarVisible(false);
       setIsDocumentUploadVisible(false);
       setIsLoading(true);
       const response = await fetch('/get_document_name', {
@@ -434,12 +459,11 @@ const ChatUI = () => {
           <hr />
           </div>
           ))
-          ) : (
-          <div className="no-response"></div>
-          )}
+          ) : null}
           </div>
           )}
-        {uploadedDocuments.length > 0 && (
+          {isUploadedDocumentsVisible && (
+        uploadedDocuments.length > 0 && (
   <div className="uploaded-documents">
     <div className="uploaded-document-title">Uploaded Documents:</div>
     {uploadedDocuments.map((document, index) => (
@@ -460,7 +484,50 @@ const ChatUI = () => {
  )}
  </div>
      </div>
-     )}
+     ))}
+
+<div className="api-response">
+{isSimilarVisible && (
+            similarResponse && similarResponse.similar_documents && similarResponse.similar_documents.length > 0 ? (
+          similarResponse.similar_documents.map((doc, index) => (
+          <div key={index} className="response-item">
+          <h3>Document Name</h3>
+          <div>{doc['Document Name']}</div>
+
+          <h3>Summary</h3>
+          <div>{doc['Summary']}</div>
+
+          {doc['link'] && doc['link'].length > 0 && (
+  <div>
+    <h3>Document Links</h3>
+    {doc['link'].map((link, linkIndex) => (
+      <div key={linkIndex}>
+        <a
+          href={link}
+          target="_blank"
+          onClick={(e) => {
+            e.preventDefault();
+            const width = 900;
+            const height = 500;
+            const left = window.screen.width / 2 - width / 2;
+            const top = window.screen.height / 2 - height / 2;
+            window.open(link, '', `width=${width},height=${height},top=${top},left=${left}`);
+          }}
+        >
+          {link.split('/')[link.split('/').length - 1]}
+        </a>
+        <br /> 
+      </div>
+    ))}
+  </div>
+)}
+
+          <hr />
+          </div>
+          ))
+          ) : null
+          )}
+          </div>
      
         <div ref={chatContainerRef}></div>
       </div>
