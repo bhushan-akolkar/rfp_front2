@@ -19,6 +19,8 @@ const ChatUI = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const [headerText, setHeaderText] = useState('Select a Folder for QA');
+
   const [suggestionsVisible, setSuggestionsVisible] = useState(false);
   const [allSuggestions, setAllSuggestions] = useState([
     '/search',
@@ -26,13 +28,15 @@ const ChatUI = () => {
     '/checklist',
     '/clear',
     '/help',
-    'what is KYC',
-    'what is credit card'
+    'What are the qualifications and experience expected from potential vendors?',
+    'What data quality and cleansing processes are necessary?'
   ]);
+  const [searchInput, setSearchInput] = useState('');
+  const [folderList, setFolderList] = useState([]);
   const location = useLocation();
   const placeholderText = (
     <div>
-      Hi, I am BankerEaze 🤖. These are some commands that you can use to control how I should respond to you.<br /><br />
+      {/* Hi, I am BankerEaze 🤖. These are some commands that you can use to control how I should respond to you.<br /><br />
   
       <strong>Switching the modes</strong><br />
       Following are the commands you can use to switch the modes:<br />
@@ -53,7 +57,7 @@ const ChatUI = () => {
       @Derivatives<br />
       @Disclosures<br />
       @Financial statements<br />
-      @Repo Transactions
+      @Repo Transactions */}
     </div>
   );
   const [chatPlaceholder, setChatPlaceholder] = useState(placeholderText);
@@ -157,78 +161,143 @@ const ChatUI = () => {
     setSuggestionsVisible(newText.trim() !== '' && filteredSuggestions.length > 0);
     setChatPlaceholder(newText.trim() === '' ? placeholderText : '');
   };
-  const handleSendMessage = () => {
+  
+  const handleSearchInput = (e) => {
+    setSearchInput(e.target.value); 
+  };
+
+  
+  const filteredFolderList = folderList.filter((folder) =>
+    folder.toLowerCase().startsWith(searchInput.toLowerCase())
+  );
+
+  useEffect(() => {
+    
+    const apiUrl = '/doc_analyser/docstack/list';
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setFolderList(data.docstack_list);
+      })
+      .catch((error) => {
+        console.error('Error fetching folder list:', error);
+      });
+  }, []);
+
+
+  const handleFolderClick = async (folderName) => {
+    try {
+      
+      setHeaderText('Selected Folder: '+folderName);
+  
+      const response = await fetch('/get_document_name', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ folderName }),
+      });
+  
+     
+    } catch (error) {
+      console.error('Error handling folder click:', error);
+    } 
+  };
+  
+
+  const handleSendMessage = async () => {
     if (inputText.trim() !== '') {
-      setIsLoading(true);
+      
       const userMessage = { text: inputText, isUser: true };
 
       setMessages([...messages, userMessage]);
+      const response = await fetch(`/doc_analyser/docstack/doc_prompt?text=${inputText}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'text/html'
+        },
+        
+        
+        // body: JSON.stringify({ user_input: inputText })
+      });
+      console.log("response is :",response)
+      console.log("function get called :")
+      const answer = await response.json();
+      console.log('Assistant Messages:', answer);
+      const Result = answer['Result']
+      console.log("Result is ",Result)
+      const Source = answer['Source_Document']
+      console.log("source is :",Source)
+      console.log(inputText)
 
+      
+      // let botResponse = {
+      //   text: `Here are the results and the source document for your query:
+      //    ${Result}`
+
+      
+      
+        
+        
+      // };
       let botResponse = {
         text: (
-          <span>
           <div>
-      Hello, I'm a bot! You can download the PDF document{" "}
-      </div>
-      <br />
-      <div>
-      <table className="pdf-table">
-        <thead>
-          <tr>
-            <th>Sr. Number</th>
-            <th>PDF Name</th>
-            <th>Score Point</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>
-              <a
-                href="./ApplicationForm1.pdf#page=2"
-                onClick={(e) => openPdfInMinimizedWindow(e, "./ApplicationForm1.pdf#page=2")}
-              >
-                PDF 1
-              </a>
-            </td>
-            <td>100</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>
-              <a
-                href="./ApplicationForm2.pdf#page=2"
-                onClick={(e) => openPdfInMinimizedWindow(e, "./ApplicationForm2.pdf#page=2")}
-              >
-                PDF 2
-              </a>
-            </td>
-            <td>95</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>
-              <a
-                href="./ApplicationForm3.pdf#page=2"
-                onClick={(e) => openPdfInMinimizedWindow(e, "./ApplicationForm3.pdf#page=2")}
-              >
-                PDF 3
-              </a>
-            </td>
-            <td>88</td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-      </span>
-        ),
-        isUser: false,
-        isTable: userMessage.isTable,
-      };
+            <h3>Result:</h3>
+            <ul>
+              {Result.split("-")
+                .filter(result => result.trim() !== '')
+                .map((result, index) => (
+                  <li key={index}>{result}</li>
+                ))}
+            </ul>
+            <h3>Source Document:</h3>
+            <table className="table"> 
+              <thead className="table-header"> 
+                <tr className="table-row">
+                  <th className="table-dataheader__item">Document Name </th>
+                  <th className="table-dataheader__item">Reference</th>
+                  <th className="table-dataheader__item">Page Number</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {Source.map((sourceDocument, index) => (
+                    <tr className="table-row" key={index}>
+                      <td className="table-data">{getTitleFromLink(sourceDocument)}</td>
+                      <td className="table-data">
+                        <a href={sourceDocument} target="_blank" rel="noopener noreferrer">
+                          Link
+                        </a>
+                      </td>
+                      <td className="table-data">{getPageNumberFromLink(sourceDocument)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ),
+        };
+        // Helper function to extract title from the link
+        function getTitleFromLink(link) {
+          const parts = link.split('/');
+          const lastPart = parts[parts.length - 1];
+          // Remove any query parameters or fragments
+          const title = lastPart.split('#')[0].split('?')[0];
+          const Ctitle = lastPart.split('.pdf')[0].toUpperCase();
+          return Ctitle;
+        }
+        function getPageNumberFromLink(link) {
+            const parts = link.split('#page=');
+            if (parts.length === 2) {
+              return parts[1];
+            }
+          }
     // let botResponse = {
     //   text: (
     //     <span>
-    //       Hello, I'm a bot! You can download the PDF document here.
+    //       {Result}
+    //       {/* {Source} */}
     //     </span>
     //   ),
     //   isUser: false,
@@ -264,7 +333,7 @@ const ChatUI = () => {
         updatedChat.messages = [...updatedChat.messages, userMessage, botResponse];
         setChatHistory(updatedHistory);
       }
-      setIsLoading(false);
+      
       setInputText('');
       scrollToBottom();
     }
@@ -396,9 +465,9 @@ const ChatUI = () => {
   />
 )} 
 <div className="logo" >
-  Banker Eaze
+  RFP Analyzer
 </div>
-<h2 className="titlee">Finance Regulatory compliance assistant</h2>
+<h2 className="titlee">RFP document analyze assistant</h2>
 
       
       <div className={`sidebar ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
@@ -408,27 +477,26 @@ const ChatUI = () => {
             <hr className="divider-below-recent-chat" />
           </div>
           
-          <div className="chat-history">
-            {chatHistory.map((entry, index) => (
-              <button
-                key={index}
-                className={`chat-history-entry ${
-                  index === activeChatIndex ? 'active' : ''
-                }`}
-                onClick={() => handleChatHistoryClick(index)}
-              >
-                {entry.name}
-                {index === activeChatIndex && (
-                  <button
-                    className="delete-button"
-                    onClick={(event) => handleDeleteChat(index, event)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                )}
-              </button>
-            ))}
+          <div className="search-bar">
+          <input
+          type="text"
+          value={searchInput}
+          onChange={handleSearchInput}
+          placeholder="Search folders"
+          className="search-input"
+        />
+          
+        </div>
+         
+          {filteredFolderList.map((folder, index) => (
+          <div
+            key={index}
+            className="folder-item"
+            onClick={() => handleFolderClick(folder)} 
+          >
+            {folder}
           </div>
+        ))}
         </div>
       </div>
       <div className="bottom-left-section">
@@ -491,7 +559,7 @@ const ChatUI = () => {
           </button>
         </div>
         <div className="header-text">
-          <div className="ask-question-text">Ask a question</div>
+        <div className="ask-question-text">{headerText}</div>
         </div>
         <hr className="divider" />
         <div className="chat-messages" ref={chatContainerRef}>

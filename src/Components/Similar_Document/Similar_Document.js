@@ -141,7 +141,7 @@ const ChatUI = () => {
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`);
       }
-        const response = await fetch('https://b43f-103-181-14-151.ngrok-free.app/doc_analyser/dockstack/upload_doc', {
+        const response = await fetch('/upload_doc', {
           method: 'POST',
           body: formData,
         });
@@ -165,7 +165,7 @@ const ChatUI = () => {
     const handleShowSimilarDocument = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('https://your-api-endpoint.com/similar_documents');
+        const response = await fetch('/doc_analyser/docstack/similar');
         if (response.ok) {
           const data = await response.json();
           setIsLoading(false);
@@ -192,7 +192,7 @@ const ChatUI = () => {
 
     useEffect(() => {
       
-      const apiUrl = 'https://your-api-endpoint.com/get_folders';
+      const apiUrl = '/doc_analyser/docstack/list';
       fetch(apiUrl)
         .then((response) => response.json())
         .then((data) => {
@@ -212,7 +212,8 @@ const ChatUI = () => {
   const handleFolderClick = async (folderName) => {
     try {
       setIsDocumentUploadVisible(false);
-      const response = await fetch('https://your-api-endpoint.com/send_folder', {
+      setIsLoading(true);
+      const response = await fetch('/get_document_name', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -222,7 +223,7 @@ const ChatUI = () => {
 
       if (response.ok) {
         
-        const secondApiResponse = await fetch('https://your-api-endpoint.com/second_api', {
+        const secondApiResponse = await fetch('/doc_analyser/similar', {
           method: 'GET',
         });
   
@@ -230,7 +231,7 @@ const ChatUI = () => {
           const responseData = await secondApiResponse.json(); 
           console.log('Response Data in API:', responseData);
           setResponseData(responseData);
-          setIsDocumentUploadVisible(false);
+          // setIsDocumentUploadVisible(false);
         } else {
           console.error('Error fetching response from the second API.');
         }
@@ -239,6 +240,9 @@ const ChatUI = () => {
       }
     } catch (error) {
       console.error('Error handling folder click:', error);
+    }
+    finally {
+      setIsLoading(false); 
     }
   };
 
@@ -266,9 +270,9 @@ const ChatUI = () => {
 
 
               <div className="logo" >
-          Banker Eaze
+          RFP Analyzer
         </div>
-        <h2 className="titlee">Finance Regulatory compliance assistant</h2>
+        <h2 className="titlee">RFP document analyze assistant</h2>
 
       <div className={`sidebar ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="sidebar-header">
@@ -288,7 +292,7 @@ const ChatUI = () => {
           
         </div>
          
-          {folderList.map((folder, index) => (
+          {filteredFolderList.map((folder, index) => (
           <div
             key={index}
             className="folder-item"
@@ -388,8 +392,12 @@ const ChatUI = () => {
           </button>
         </div>
          ) }
+         
+         {isLoading ? (
+          <div className="loading-message">Generating Response...</div>
+        ) : (
             <div className="api-response">
-          {responseData && responseData.similar_documents && responseData.similar_documents.length > 0  (
+            {responseData && responseData.similar_documents && responseData.similar_documents.length > 0 ? (
           responseData.similar_documents.map((doc, index) => (
           <div key={index} className="response-item">
           <h3>Document Name</h3>
@@ -398,20 +406,39 @@ const ChatUI = () => {
           <h3>Summary</h3>
           <div>{doc['Summary']}</div>
 
-          <h3>Links</h3>
-          <div>
-          {doc.link.map((link, linkIndex) => (
-          <a key={linkIndex} href={link} target="_blank" rel="noopener noreferrer">
-          Link {linkIndex + 1}
-          </a>
-          ))}
-          </div>
+          {doc['link'] && doc['link'].length > 0 && (
+  <div>
+    <h3>Document Links</h3>
+    {doc['link'].map((link, linkIndex) => (
+      <div key={linkIndex}>
+        <a
+          href={link}
+          target="_blank"
+          onClick={(e) => {
+            e.preventDefault();
+            const width = 900;
+            const height = 500;
+            const left = window.screen.width / 2 - width / 2;
+            const top = window.screen.height / 2 - height / 2;
+            window.open(link, '', `width=${width},height=${height},top=${top},left=${left}`);
+          }}
+        >
+          {link.split('/')[link.split('/').length - 1]}
+        </a>
+        <br /> 
+      </div>
+    ))}
+  </div>
+)}
 
           <hr />
           </div>
           ))
-          ) }
+          ) : (
+          <div className="no-response"></div>
+          )}
           </div>
+          )}
         {uploadedDocuments.length > 0 && (
   <div className="uploaded-documents">
     <div className="uploaded-document-title">Uploaded Documents:</div>

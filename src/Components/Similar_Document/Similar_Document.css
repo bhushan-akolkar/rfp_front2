@@ -67,9 +67,16 @@
   border: 1px solid #abb2ba;
   border-radius: 16px;
   /* opacity: 0.3; */
-
+  overflow: hidden;
+}
+.sidebar:hover {
+ 
+  overflow-y: auto;
 }
 
+.chat-container{
+  overflow-y: auto;
+}
 .sidebar-header {
   text-align: center;
   margin-bottom: 20px;

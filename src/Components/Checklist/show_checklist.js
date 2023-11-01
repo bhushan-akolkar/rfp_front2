@@ -15,13 +15,16 @@ const ChatUI = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Loading indicator
-  
+  const [searchInput, setSearchInput] = useState('');
+  const [folderList, setFolderList] = useState([]);
+  const [responseData, setResponseData] = useState(null);
+
   const location = useLocation();
   // const { apiResponse } = location.state;
   const queryParams = new URLSearchParams(location.search);
   const apiResponseQueryParam = queryParams.get('apiResponse');
   const apiResponse = JSON.parse(decodeURIComponent(apiResponseQueryParam));
-
+  const [isDocumentUploadVisible, setIsDocumentUploadVisible] = useState(true);
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
@@ -102,7 +105,65 @@ const ChatUI = () => {
         return 'Prompt'; 
     }
   }
- 
+  const handleSearchInput = (e) => {
+    setSearchInput(e.target.value); 
+  };
+
+
+  const filteredFolderList = folderList.filter((folder) =>
+    folder.toLowerCase().startsWith(searchInput.toLowerCase())
+  );
+  useEffect(() => {
+
+    const apiUrl = '/doc_analyser/docstack/list';
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setFolderList(data.docstack_list);
+      })
+      .catch((error) => {
+        console.error('Error fetching folder list:', error);
+      });
+  }, []);
+
+  const handleFolderClick = async (folderName) => {
+    try {
+      setIsDocumentUploadVisible(false);
+      setIsLoading(true);
+      const response = await fetch('/get_document_name', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ folderName }),
+      });
+
+      if (response.ok) {
+
+        const secondApiResponse = await fetch('/doc_analyser/checkpoints', {
+          method: 'GET',
+        });
+
+        if (secondApiResponse.ok) {
+          const responseData = await secondApiResponse.json();
+          setResponseData(responseData);
+          setIsDocumentUploadVisible(responseData && responseData.similar_documents && responseData.similar_documents.length > 0);
+          console.log('Response Data in API:', responseData);
+          // setResponseData(responseData);
+          // setIsDocumentUploadVisible(responseData && responseData.similar_documents && responseData.similar_documents.length > 0);
+        } else {
+          console.error('Error fetching response from the second API.');
+        }
+      } else {
+        console.error('Error sending folder name to the API.');
+      }
+    } catch (error) {
+      console.error('Error handling folder click:', error);
+    }
+    finally {
+      setIsLoading(false); 
+    }
+  };
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -136,9 +197,9 @@ const ChatUI = () => {
 
      
 <div className="logo" >
-  Banker Eaze
+  RFP Analyzer
 </div>
-<h2 className="titlee">Finance Regulatory compliance assistant</h2>
+<h2 className="titlee">RFP document analyze assistant</h2>
 
       
       <div className={`sidebar ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
@@ -147,8 +208,25 @@ const ChatUI = () => {
           <div className="divider-container">
             <hr className="divider-below-recent-chat" />
           </div>
-          
+          </div>
+        <div className="search-bar">
+          <input
+          type="text"
+          value={searchInput}
+          onChange={handleSearchInput}
+          placeholder="Search folders"
+          className="search-input"
+        />
         </div>
+        {filteredFolderList.map((folder, index) => (
+          <div
+            key={index}
+            className="folder-item"
+            onClick={() => handleFolderClick(folder)} 
+          >
+            {folder}
+          </div>
+        ))}
       </div>
       <div className="bottom-left-section">
   <p className="bottom-left-text">Product From</p>
@@ -205,23 +283,94 @@ const ChatUI = () => {
         </div>
         <hr className="divider" />
         <div className="chat-messagess" ref={chatContainerRef}>
-   
+        {isDocumentUploadVisible && (
         <div className="api-response">
-            {apiResponse.checklist.map((doc, index) => (
+            {apiResponse.Checklist.map((doc, index) => (
             <div key={index} className="response-item">
 
-            <h3>Document Name</h3>
-            <div>{doc['Document Name']}</div>
+            <h3>Question</h3>
+            <div>{doc['Question']}</div>
 
-            <h3>Summary</h3> 
-            <div>{doc['Summary']}</div>
+            <h3>Answer</h3> 
+            <div>{doc['Answer']}</div>
+
+            {doc['link'] && doc['link'].length > 0 && (
+            <div>
+              <h3>Document Links</h3>
+              {doc['link'].map((link, linkIndex) => (
+                <div key={linkIndex}>
+                  <a
+                    href={`${link}?page=2`}
+                    target="_blank"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const width = 900;
+                      const height = 500;
+                      const left = window.screen.width / 2 - width / 2;
+                      const top = window.screen.height / 2 - height / 2;
+                      window.open(link, '', `width=${width},height=${height},top=${top},left=${left}`);
+                    }}
+                  >
+                    {link.split('/')[link.split('/').length - 1]}
+                  </a>
+                  <br /> 
+                </div>
+              ))}
+            </div>
+          )}
             
             <hr />
             </div>
       ))}
   </div>
-  
+        )}
+        {isLoading ? (
+          <div className="loading-message">Generating Response...</div>
+        ) : (
+        <div className="api-response">
+            {responseData && responseData.Checklist && responseData.Checklist.length > 0 ? (
+          responseData.Checklist.map((doc, index) => (
+          <div key={index} className="response-item">
+          <h3>Question</h3>
+            <div>{doc['Question']}</div>
 
+            <h3>Answer</h3> 
+            <div>{doc['Answer']}</div>
+
+            {doc['link'] && doc['link'].length > 0 && (
+  <div>
+    <h3>Document Links</h3>
+    {doc['link'].map((link, linkIndex) => (
+      <div key={linkIndex}>
+        <a
+          href={`${link}?page=2`}
+          target="_blank"
+          onClick={(e) => {
+            e.preventDefault();
+            const width = 900;
+            const height = 500;
+            const left = window.screen.width / 2 - width / 2;
+            const top = window.screen.height / 2 - height / 2;
+            window.open(link, '', `width=${width},height=${height},top=${top},left=${left}`);
+          }}
+        >
+          {link.split('/')[link.split('/').length - 1]}
+        </a>
+        <br /> 
+      </div>
+    ))}
+  </div>
+)}
+            
+            <hr />
+            </div>
+      ))
+      ) : (
+      <div className="no-response"></div>
+      )}
+  </div>
+  
+        )}
           <div ref={scrollToBottom}></div>
         </div>
       </div>

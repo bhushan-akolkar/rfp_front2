@@ -16,8 +16,8 @@ const SignInPage = () => {
   return (
     <div className="login-container">
       <div className="left-container">
-        <div className="title">RBI Credit Card compliance assistant</div>
-        <div className="subtitle">Ask your query about Credit Card compliance, we will get the best relevant compliance guideline from RBI</div>
+        <div className="title">RFP document analyze assistant</div>
+        <div className="subtitle">Retrieve similar RFPs on which your organization has already worked and their checklist answers.</div>
       </div>
       <div className="right-container">
         <div className='sign-up'>
