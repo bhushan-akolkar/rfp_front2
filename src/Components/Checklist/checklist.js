@@ -19,6 +19,7 @@ const ChatUI = () => {
     const location = useLocation();
     const [folderList, setFolderList] = useState([]);
     const [isDocumentUploadVisible, setIsDocumentUploadVisible] = useState(true);
+    const [isUploadedDocumentsVisible, setIsUploadedDocumentsVisible] = useState(true);
     const [secondApiResponse, setSecondApiResponse] = useState(null);
   const [responseData, setResponseData] = useState(null);
   const [checklistResponse, setChecklistResponse] = useState(null);
@@ -192,6 +193,7 @@ const ChatUI = () => {
           setChecklistResponse(data);
           setIsChecklistVisible(true); 
           setIsDocumentUploadVisible(false); 
+          setIsUploadedDocumentsVisible(false);
           setIsLoading(false);
         } else {
           console.error('Error fetching similar documents.');
@@ -226,7 +228,7 @@ const ChatUI = () => {
 
     const handleFolderClick = async (folderName) => {
       try {
-        
+        setIsChecklistVisible(false);
         const response = await fetch('/get_document_name', {
           method: 'POST',
           headers: {
@@ -453,7 +455,8 @@ const ChatUI = () => {
           <div className="no-response"></div>
           )}
           </div>
-        {uploadedDocuments.length > 0 && (
+          {isUploadedDocumentsVisible && (
+        uploadedDocuments.length > 0 && (
   <div className="uploaded-documents">
     <div className="uploaded-document-title">Uploaded Documents:</div>
     {uploadedDocuments.map((document, index) => (
@@ -467,18 +470,19 @@ const ChatUI = () => {
         <button className="similarDoc-button" onClick={handleShowSimilarDocument}>
         Get Checklist
         </button>
-        {/* {isLoading && (
+         {isLoading && (
         <div className="loader-container">
         <div className="loader"></div>
         </div>
-        )} */}
+        )} 
         </div>
      </div>
+        )
      )}
 
      <div className="api-response">
-      
-          {checklistResponse && checklistResponse.Checklist && checklistResponse.Checklist.length > 0 ? (
+     {isChecklistVisible && (
+          checklistResponse && checklistResponse.Checklist && checklistResponse.Checklist.length > 0 ? (
           checklistResponse.Checklist.map((doc, index) => (
           <div key={index} className="response-item">
           <h3>Question</h3>
@@ -526,7 +530,7 @@ const ChatUI = () => {
           ))
           ) : (
           <div className="no-response"></div>
-          )}
+          ))}
           </div>
         <div ref={chatContainerRef}></div>
       </div>
